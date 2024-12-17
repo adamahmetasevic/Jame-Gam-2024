@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
         isGameActive = true;
         gameTimer = 0f;
         onGameStart?.Invoke();
+        GameTimer.Instance?.StartTimer(); // Start the timer
         StartCoroutine(SpawnEnemyRoutine());
     }
 
@@ -175,10 +176,22 @@ Vector2 GetRandomSpawnPosition()
     {
         isGameActive = false;
         onGameEnd?.Invoke();
+        
+        GameTimer.Instance?.StopTimer(); // Stop the timer
 
-        // You can add additional game end logic here
-        Debug.Log(victory ? "Game Won!" : "Game Over!");
+        // Log the total time
+        float totalTime = GameTimer.Instance?.TotalTime ?? 0f;
+        if (victory)
+        {
+            Debug.Log("Game Won!");
+            Debug.Log($"Total Game Time: {totalTime:F2} seconds");
+        }
+        else
+        {
+            Debug.Log("Game Over!");
+        }
     }
+
 
     // Helper method to get current game progress (0 to 1)
     public float GetGameProgress()
