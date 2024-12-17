@@ -38,10 +38,42 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    public void Heal(int amount)
+    {
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        healthBar.value = currentHealth; // Update health bar UI
+        Debug.Log($"Player healed by {amount}. Current health: {currentHealth}");
+    }
+
+    public void IncreaseMaxHealth(float amount)
+    {
+        maxHealth += amount;
+
+            currentHealth += amount; // Maintain relative health
+        
+
+        healthBar.maxValue = maxHealth;
+        healthBar.value = currentHealth;
+        Debug.Log($"Max health increased by {amount}. Current max health: {maxHealth}");
+    }
+
     void Die()
     {
         Debug.Log("Player has died!");
         Destroy(gameObject); // Destroy player object
         // Optional: Trigger a game over screen or reset the level
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Heal"))
+        {
+            HealObject healObject = collision.GetComponent<HealObject>();
+            if (healObject != null)
+            {
+                Heal(healObject.healAmount);
+                Destroy(collision.gameObject); // Remove the heal object after use
+            }
+        }
     }
 }
