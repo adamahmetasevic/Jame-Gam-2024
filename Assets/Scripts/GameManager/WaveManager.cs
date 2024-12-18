@@ -8,7 +8,7 @@ public class WaveManager : MonoBehaviour
     public int totalWaves = 15;            // Total number of waves
     public float waveInterval = 60f;       // Time interval between waves in seconds
     public float spawnRadius = 10f;        // Radius around the spawner for enemy spawn
-    private float currentSpawnRate = 1f;   // Initial spawn rate (1 enemy per second)
+    private float currentSpawnRate = 0.5f; // Adjusted spawn rate (less enemies per second)
 
     [Header("Enemy Prefabs")]
     public GameObject elvesPrefab;
@@ -38,7 +38,7 @@ public class WaveManager : MonoBehaviour
             // Increase spawn rate for waves 7-14
             if (currentWave >= 7 && currentWave <= 14)
             {
-                currentSpawnRate = Mathf.Max(1f, currentSpawnRate * 2); // Double spawn rate for waves 7-14
+                currentSpawnRate = Mathf.Max(0.5f, currentSpawnRate * 1.5f); // Slightly increase spawn rate for waves 7-14
                 Debug.Log($"Spawn rate increased to: {currentSpawnRate}");
             }
 
@@ -53,7 +53,7 @@ public class WaveManager : MonoBehaviour
         // Adjust spawn rate for waves 7-14
         if (waveNumber >= 7 && waveNumber <= 14)
         {
-            spawnRate *= 2;
+            spawnRate *= 1.5f;
         }
 
         // Spawn enemies based on the wave number
@@ -95,7 +95,7 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    private IEnumerator SpawnEnemies(GameObject enemyType, float spawnRate = 1f)
+    private IEnumerator SpawnEnemies(GameObject enemyType, float spawnRate = 0.5f)
     {
         while (true)
         {
@@ -115,7 +115,7 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    private IEnumerator SpawnEnemies(GameObject enemyType1, GameObject enemyType2, float spawnRate = 1f)
+    private IEnumerator SpawnEnemies(GameObject enemyType1, GameObject enemyType2, float spawnRate = 0.5f)
     {
         while (true)
         {
@@ -135,7 +135,7 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    private IEnumerator SpawnEnemies(GameObject enemyType1, GameObject enemyType2, GameObject enemyType3, float spawnRate = 1f)
+    private IEnumerator SpawnEnemies(GameObject enemyType1, GameObject enemyType2, GameObject enemyType3, float spawnRate = 0.5f)
     {
         while (true)
         {
@@ -158,31 +158,31 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-private IEnumerator SpawnSantaBoss()
-{
-    Debug.LogWarning("Invalid boss spawn position. Retrying in 5 seconds."); // Log a message about retrying
-    yield return new WaitForSeconds(5f); // Wait before retrying
-
-    // Now retry the spawning
-    Vector2 randomSpawnOffset = Random.insideUnitCircle * spawnRadius;
-    Vector3 spawnPosition = transform.position + new Vector3(randomSpawnOffset.x, 0, randomSpawnOffset.y);
-
-    if (IsValidSpawnPosition(spawnPosition))
+    private IEnumerator SpawnSantaBoss()
     {
-        Instantiate(bossPrefab, spawnPosition, Quaternion.identity);
-    }
-    else
-    {
-        Debug.LogWarning("Invalid boss spawn position again. Retrying...");
-        StartCoroutine(SpawnSantaBoss()); // Retry spawning
-    }
-}
+        Debug.LogWarning("Invalid boss spawn position. Retrying in 5 seconds."); // Log a message about retrying
+        yield return new WaitForSeconds(5f); // Wait before retrying
 
+        // Now retry the spawning
+        Vector2 randomSpawnOffset = Random.insideUnitCircle * spawnRadius;
+        Vector3 spawnPosition = transform.position + new Vector3(randomSpawnOffset.x, 0, randomSpawnOffset.y);
+
+        if (IsValidSpawnPosition(spawnPosition))
+        {
+            Instantiate(bossPrefab, spawnPosition, Quaternion.identity);
+        }
+        else
+        {
+            Debug.LogWarning("Invalid boss spawn position again. Retrying...");
+            StartCoroutine(SpawnSantaBoss()); // Retry spawning
+        }
+    }
 
     private bool IsValidSpawnPosition(Vector3 position)
     {
-        // Implement your spawn validation logic here (e.g., check if the position is inside obstacles)
-        return true; // For now, assume it's always valid
+        // Check if the spawn position is free from obstacles or other enemies
+        Collider[] colliders = Physics.OverlapSphere(position, 1f); // Check within a 1-unit radius to avoid overlap
+        return colliders.Length == 0; // If no colliders, it's valid
     }
 
     public void StopSpawning()
