@@ -11,17 +11,17 @@ public class MaceProjectile : MonoBehaviour
         Destroy(gameObject, lifetime);
 
         // Make sure the projectile is on the "Projectile" layer
-        //gameObject.layer = LayerMask.NameToLayer("Projectile");
+        gameObject.layer = LayerMask.NameToLayer("Playerbullet");
 
         // Ignore collisions between the projectile and the enemy layer
-        //Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Projectile"), LayerMask.NameToLayer("Enemy"));
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Playerbullet"), LayerMask.NameToLayer("Mace"));
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            // Get the Enemy component and apply damage
+            // Get the Enemy component and 
             Enemy enemy = collision.gameObject.GetComponent<Enemy>();
             if (enemy != null)
             {

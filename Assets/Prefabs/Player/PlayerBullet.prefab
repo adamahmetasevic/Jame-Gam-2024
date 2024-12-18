@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 2790194808008381876}
   - component: {fileID: 2402248347451777423}
   - component: {fileID: 8197633767180059033}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerBullet
-  m_TagString: Untagged
+  m_TagString: PlayerBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,9 +101,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifetime: 5
   damage: 10
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 8
 --- !u!58 &2402248347451777423
 CircleCollider2D:
   m_ObjectHideFlags: 0

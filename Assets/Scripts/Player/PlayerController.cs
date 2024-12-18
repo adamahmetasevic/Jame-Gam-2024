@@ -7,9 +7,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Mace Settings")]
     public GameObject mace;                // Reference to the mace object
-    public float maceFollowSpeed = 5f;     // Speed at which the mace follows the mouse
-    public float maceBaseDamage = 5f;      // Base damage of the mace
-    public float maceDamageMultiplier = 1f; // Multiplier for mace damage
+ //   public float maceFollowSpeed = 5f;     // Speed at which the mace follows the mouse
+   // public float maceBaseDamage = 5f;      // Base damage of the mace
+  //  public float maceDamageMultiplier = 1f; // Multiplier for mace damage
 
     private Rigidbody2D rb;
     private Vector2 movement;
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         HandleMovement();
-        UpdateMacePosition();
+        //UpdateMacePosition();
     }
 
     void HandleMovement()
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
         rb.velocity = movement * moveSpeed;
     }
 
-    void UpdateMacePosition()
+    /*void UpdateMacePosition()
     {
         if (mace != null)
         {
@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
     {
         return maceBaseDamage * maceDamageMultiplier * velocityMagnitude;
     }
-
+*/
     // Interface with PlayerHealth
     public void TakeDamage(int damage)
     {

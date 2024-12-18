@@ -5,13 +5,18 @@ public class CandyCaneMace : MonoBehaviour
     public Transform player; // Reference to the player
     public float followSpeed = 10f; // How quickly the mace follows the mouse
     public float maxDistance = 2f; // Max distance mace can stretch from the player
-    public bool canShootProjectiles = false; // Whether the mace can shoot projectiles
     public GameObject projectilePrefab; // The projectile prefab to be shot
     public float projectileSpread = 15f; // The angle spread between projectiles
     public LayerMask projectileLayer; // LayerMask to control collisions for projectiles
+    public GameObject muzzleFlashPrefab; // Particle effect prefab for firing animation
 
     private Rigidbody2D rb; // Rigidbody for physics
     private Vector2 previousPosition; // Tracks previous position to calculate velocity
+
+    // Upgradable properties
+    private int projectileCount = 1; // Number of projectiles to shoot
+    private float projectileSpeed = 10f; // Speed of the projectiles
+    private float projectileSize = 1f; // Size multiplier for the projectiles
 
     void Start()
     {
@@ -29,9 +34,8 @@ public class CandyCaneMace : MonoBehaviour
 
     void FollowMouseWithPhysics()
     {
-        // Get mouse position in world coordinates
         Vector3 mousePos3D = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 mousePos = new Vector2(mousePos3D.x, mousePos3D.y);  // Convert to Vector2 (ignore z-axis)
+        Vector2 mousePos = new Vector2(mousePos3D.x, mousePos3D.y);
         
         Vector2 direction = (mousePos - (Vector2)player.position);
 
@@ -47,18 +51,15 @@ public class CandyCaneMace : MonoBehaviour
         Vector2 force = (targetPosition - rb.position) * followSpeed;
         rb.AddForce(force);
 
-        // Optional: Add drag to stabilize
         rb.drag = 2f;
     }
 
-    // Calculate damage based on momentum
     public float GetDamage()
     {
         float velocity = (rb.position - previousPosition).magnitude / Time.fixedDeltaTime;
         previousPosition = rb.position;
 
-        // Damage scales with velocity
-        return Mathf.Clamp(velocity * 5f, 0f, 100f); // Scale damage
+        return Mathf.Clamp(velocity * 5f, 0f, 100f);
     }
 
     public void IncreaseMaceSpeed(float amount)
@@ -67,43 +68,98 @@ public class CandyCaneMace : MonoBehaviour
         Debug.Log($"Mace speed increased to {followSpeed}!");
     }
 
-    public void EnableMaceProjectileAttack()
+    public void UpgradeProjectileCount(int amount)
     {
-        canShootProjectiles = true;
-        Debug.Log("Mace projectile attack unlocked!");
+        projectileCount += amount;
+        Debug.Log($"Projectile count increased to {projectileCount}!");
+    }
+
+    public void UpgradeProjectileSpeed(float amount)
+    {
+        projectileSpeed += amount;
+        Debug.Log($"Projectile speed increased to {projectileSpeed}!");
+    }
+
+    public void UpgradeProjectileSize(float multiplier)
+    {
+        projectileSize *= multiplier;
+        Debug.Log($"Projectile size increased to {projectileSize}x!");
     }
 
     void Update()
     {
-        // Shoot projectiles when the mace projectile attack is enabled
-        if (canShootProjectiles && Input.GetKeyDown(KeyCode.Space)) // Replace Space with desired input
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             ShootProjectiles();
         }
     }
 
-    void ShootProjectiles()
+   void ShootProjectiles()
+{
+    if (projectileCount <= 0 || player == null) return;
+
+    // Get the mouse position in world coordinates
+    Vector3 mousePos3D = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+    if (float.IsNaN(mousePos3D.x) || float.IsNaN(mousePos3D.y))
     {
-        // Shoot three projectiles with slight spread from the mace position
-        for (int i = -1; i <= 1; i++) // Loop for three projectiles
+        Debug.LogError("Invalid mouse position. Unable to shoot projectiles.");
+        return;
+    }
+
+    Vector2 mousePos = new Vector2(mousePos3D.x, mousePos3D.y);
+    Vector2 playerPos = player.position;
+
+    if (float.IsNaN(playerPos.x) || float.IsNaN(playerPos.y))
+    {
+        Debug.LogError("Invalid player position. Unable to shoot projectiles.");
+        return;
+    }
+
+    // Base direction (mouse - player)
+    Vector2 baseDirection = (mousePos - playerPos).normalized;
+    if (baseDirection == Vector2.zero)
+    {
+        Debug.LogError("Base direction is zero. Unable to shoot projectiles.");
+        return;
+    }
+
+    // Calculate angle spread
+    float angleStep = projectileSpread / Mathf.Max(projectileCount - 1, 1);
+    float startAngle = -projectileSpread / 2;
+
+    // Shoot projectiles
+    for (int i = 0; i < projectileCount; i++)
+    {
+        float angle = startAngle + i * angleStep;
+        Vector2 direction = Quaternion.Euler(0, 0, angle) * baseDirection;
+
+        // Instantiate the projectile
+        GameObject projectile = Instantiate(projectilePrefab, rb.position, Quaternion.identity);
+        Rigidbody2D rbProjectile = projectile.GetComponent<Rigidbody2D>();
+
+        if (rbProjectile != null)
         {
-            // Get direction from the mace to the mouse position
-Vector2 direction = (new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y) - (Vector2)player.position);
-            direction = Quaternion.Euler(0, 0, i * projectileSpread) * direction; // Apply spread
+            rbProjectile.velocity = direction * projectileSpeed;
 
-            // Instantiate the projectile at the mace's position
-            GameObject projectile = Instantiate(projectilePrefab, rb.position, Quaternion.identity);
-            Rigidbody2D rbProjectile = projectile.GetComponent<Rigidbody2D>();
+            // Adjust size of projectile
+            projectile.transform.localScale *= projectileSize;
+        }
 
-            if (rbProjectile != null)
+        // Instantiate the particle effect
+        if (muzzleFlashPrefab != null)
+        {
+            GameObject muzzleFlash = Instantiate(muzzleFlashPrefab, rb.position, Quaternion.identity);
+            ParticleSystem particleSystem = muzzleFlash.GetComponent<ParticleSystem>();
+            if (particleSystem != null)
             {
-                rbProjectile.velocity = direction * 10f; // Set the velocity for the projectile
-
-                // Set the projectile's layer to the correct layer
-                projectile.layer = LayerMask.NameToLayer("Projectile");
-
-                // Ignore collision between projectile and mace
+                particleSystem.Play();
             }
+
+            // Destroy the particle system after its duration
+            Destroy(muzzleFlash, 1f);
         }
     }
+}
+
 }
