@@ -1,21 +1,24 @@
 using UnityEngine;
 
-public class ChainRenderer : MonoBehaviour
+public class ChainRendererFlail : MonoBehaviour
 {
-    public Transform player; // The player's transform
-    private LineRenderer lineRenderer;
+    public Transform player; // Player reference
+    public LineRenderer lineRenderer;
 
     void Start()
     {
-        // Get the LineRenderer component attached to this GameObject (Flail)
-        lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.positionCount = 2; // The chain has two endpoints
+        // Ensure Texture Mode is set to Tile in the Material
+        lineRenderer.material.mainTexture.wrapMode = TextureWrapMode.Repeat;
     }
 
     void Update()
     {
-        // Set the positions of the line: from the flail to the player
-        lineRenderer.SetPosition(0, transform.position); // Start at the flail (this GameObject)
-        lineRenderer.SetPosition(1, player.position);    // End at the player
+        // Update the line's positions
+        lineRenderer.SetPosition(0, player.position);
+        lineRenderer.SetPosition(1, transform.position);
+
+        // Dynamically adjust texture tiling
+        float distance = Vector3.Distance(player.position, transform.position);
+        lineRenderer.material.mainTextureScale = new Vector2(distance, 1);
     }
 }
