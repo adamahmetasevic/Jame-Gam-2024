@@ -16,11 +16,27 @@ public class GameManager : MonoBehaviour
     [Header("Game State")]
     public bool isGamePaused = false;      // To pause during upgrades
 
+    public GameTimer gameTimer;
+
     void Start()
     {
         playerXP = 0;
         currentLevel = 1;
         Time.timeScale = 1f; // Ensure game starts unpaused
+
+
+        // NAMU TIMER ADDITION
+        // Ensure gameTimer is initialized
+        
+        if (gameTimer != null)
+        {
+            gameTimer.ResetTimer(); // Reset the timer
+            gameTimer.StartTimer(); // Start the timer
+        }
+        else
+        {
+            Debug.LogError("GameTimer reference is missing!");
+        }
     }
 
     public void AddXP(int xpAmount)
@@ -96,11 +112,31 @@ public class GameManager : MonoBehaviour
     {
         isGamePaused = true;
         Time.timeScale = 0f;
+        
+        // NAMU TIMER ADDITION
+        if (gameTimer != null)
+        {
+            gameTimer.StopTimer();
+        }
+        else
+        {
+            Debug.LogError("GameTimer is null while trying to pause the game.");
+        }
     }
 
     private void ResumeGame()
     {
         isGamePaused = false;
         Time.timeScale = 1f;
+        
+        // NAMU TIMER ADDITION
+        if (gameTimer != null)
+        {
+            gameTimer.StartTimer();
+        }
+        else
+        {
+            Debug.LogError("GameTimer is null while trying to resume the game.");
+        }
     }
 }
