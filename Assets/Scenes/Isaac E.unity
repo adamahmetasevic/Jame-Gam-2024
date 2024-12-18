@@ -600,6 +600,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1403467280}
     - target: {fileID: 3611177944922643821, guid: 8a3683dcc3cdac94288caa0eba08e442, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611177944922643821, guid: 8a3683dcc3cdac94288caa0eba08e442, type: 3}
       propertyPath: lineRenderer
       value: 
       objectReference: {fileID: 2086655408}
@@ -679,6 +683,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1403467280}
+    - target: {fileID: 8772697930196921861, guid: 8a3683dcc3cdac94288caa0eba08e442, type: 3}
+      propertyPath: canShootProjectiles
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 39263685367576847, guid: 8a3683dcc3cdac94288caa0eba08e442, type: 3}
     m_RemovedGameObjects: []
@@ -687,6 +695,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6030874380476005557, guid: 8a3683dcc3cdac94288caa0eba08e442, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2086655415}
+    - targetCorrespondingSourceObject: {fileID: 6030874380476005557, guid: 8a3683dcc3cdac94288caa0eba08e442, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2086655421}
   m_SourcePrefab: {fileID: 100100000, guid: 8a3683dcc3cdac94288caa0eba08e442, type: 3}
 --- !u!114 &962462842 stripped
 MonoBehaviour:
@@ -1325,6 +1336,28 @@ PolygonCollider2D:
       - {x: 0.13971555, y: 0.13102594}
       - {x: 0.10014148, y: 0.16010937}
   m_UseDelaunayMesh: 0
+--- !u!4 &2086655420 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6706120796762978021, guid: 8a3683dcc3cdac94288caa0eba08e442, type: 3}
+  m_PrefabInstance: {fileID: 715068838}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2086655421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738481079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c62105ac9bdad44f95ccdf18b71f9ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1403467280}
+  weaponEnd: {fileID: 2086655420}
+  segmentCount: 20
+  waveFrequency: 1
+  waveAmplitude: 0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
