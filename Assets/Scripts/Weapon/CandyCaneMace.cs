@@ -21,7 +21,10 @@ public class CandyCaneMace : MonoBehaviour
 
     void FixedUpdate()
     {
-        FollowMouseWithPhysics();
+        if (player != null && player.gameObject != null)
+        {
+            FollowMouseWithPhysics();
+        }
     }
 
     void FollowMouseWithPhysics()
