@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 706605655717144771}
   - component: {fileID: 8496864062528039015}
+  - component: {fileID: 7599856788403078998}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -44,21 +45,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f72845c45fa3ce4d8cca15c46ab4654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefabs: []
-  bossPrefab: {fileID: 0}
-  gameLength: 900
-  minSpawnTime: 2
-  maxSpawnTime: 5
-  spawnRadius: 15
-  minSpawnDistance: 10
-  spawnRateIncrease: 0.1
-  maxEnemiesAlive: 10
-  onGameStart:
-    m_PersistentCalls:
-      m_Calls: []
-  onBossSpawn:
-    m_PersistentCalls:
-      m_Calls: []
-  onGameEnd:
-    m_PersistentCalls:
-      m_Calls: []
+  playerXP: 0
+  xpToNextLevel: 100
+  xpIncreasePerLevel: 50
+  currentLevel: 1
+  allUpgrades: []
+  upgradePanelController: {fileID: 0}
+  isGamePaused: 0
+--- !u!114 &7599856788403078998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1993383045542516404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e116e5309b5f9bd4e8dc14b15ffd28b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradePanel: {fileID: 0}
+  upgradeButtonParent: {fileID: 0}
+  upgradeButtonPrefab: {fileID: 0}

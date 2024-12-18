@@ -28,6 +28,8 @@ public class Enemy : MonoBehaviour
     [Header("Visual Feedback")]
     public Color damageFlashColor = Color.red;
     private SpriteRenderer spriteRenderer;
+    private GameManager gameManager;
+
 
     void Start()
     {
@@ -35,6 +37,7 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     void Update()
@@ -138,8 +141,15 @@ private void TakeDamage(float damage)
 
     private void Die()
     {
-        Debug.Log("Enemy has been defeated!");
-        Destroy(gameObject);
+            Debug.Log("Enemy has been defeated!");
+    
+    // Grant XP when enemy dies (enough to trigger a level up)
+    if (gameManager != null)
+    {
+        gameManager.AddXP(100); // This will grant 100 XP, which should trigger a level up
+    }
+    
+    Destroy(gameObject);
     }
 
     private System.Collections.IEnumerator DamageFlash()

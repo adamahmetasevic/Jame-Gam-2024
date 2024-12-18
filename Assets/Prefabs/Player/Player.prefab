@@ -128,6 +128,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  mace: {fileID: 0}
+  maceFollowSpeed: 5
+  maceBaseDamage: 5
+  maceDamageMultiplier: 1
+  canShootProjectiles: 0
 --- !u!114 &2797275847992529689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,7 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   healthBar: {fileID: 0}
-  healthBarOffset: {x: 0, y: -1.54, z: 0}
+  healthBarOffset: {x: 0, y: -1, z: 0}
 --- !u!58 &3838448475730894767
 CircleCollider2D:
   m_ObjectHideFlags: 0
