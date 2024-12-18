@@ -104,6 +104,9 @@ MonoBehaviour:
   player: {fileID: 0}
   followSpeed: 10
   maxDistance: 2
+  canShootProjectiles: 0
+  projectilePrefab: {fileID: 2095137069936418059, guid: d6244d5f01ee8da48b0eb875a41cf754, type: 3}
+  projectileSpread: 15
 --- !u!50 &6605439788431010091
 Rigidbody2D:
   serializedVersion: 4
@@ -293,3 +296,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  lineRenderer: {fileID: 7795571382916554380}

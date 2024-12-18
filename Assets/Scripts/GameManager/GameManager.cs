@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
                 FindObjectOfType<CandyCaneMace>().IncreaseMaceSpeed(upgrade.value);
                 break;
             case UpgradeData.UpgradeType.MaceProjectileAttack:
-                FindObjectOfType<PlayerController>().EnableMaceProjectileAttack();
+                FindObjectOfType<CandyCaneMace>().EnableMaceProjectileAttack();
                 break;
             case UpgradeData.UpgradeType.HealthIncrease:
                 FindObjectOfType<PlayerController>().IncreaseHealth(upgrade.value);

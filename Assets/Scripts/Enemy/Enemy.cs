@@ -126,7 +126,7 @@ public class Enemy : MonoBehaviour
         return Mathf.Clamp(damage, 5f, 200f);
     }
 
-private void TakeDamage(float damage)
+public void TakeDamage(float damage)
     {
         currentHealth -= damage;
         Debug.Log($"Enemy took {damage} damage! Current health: {currentHealth}");

@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
     public float maceFollowSpeed = 5f;     // Speed at which the mace follows the mouse
     public float maceBaseDamage = 5f;      // Base damage of the mace
     public float maceDamageMultiplier = 1f; // Multiplier for mace damage
-    public bool canShootProjectiles = false; // Whether the mace can shoot projectiles
 
     private Rigidbody2D rb;
     private Vector2 movement;
@@ -87,7 +86,7 @@ public class PlayerController : MonoBehaviour
    public void IncreaseSpeed(int amount){
     moveSpeed+=amount;
    }
-   
+   /*
     public void IncreaseMaceDamage(float multiplier)
     {
         maceDamageMultiplier += multiplier;
@@ -99,4 +98,5 @@ public class PlayerController : MonoBehaviour
         canShootProjectiles = true;
         Debug.Log("Mace projectile attack unlocked!");
     }
+    */
 }
