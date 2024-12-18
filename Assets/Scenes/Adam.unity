@@ -163,11 +163,11 @@ MonoBehaviour:
   currentWave: 1
   totalWaves: 15
   waveInterval: 60
-  spawnRadius: 10
   elvesPrefab: {fileID: 4478695475819897668, guid: 71e58aa924e3c224ea021651e19fcddb, type: 3}
   snowmenPrefab: {fileID: 4478695475819897668, guid: 71e58aa924e3c224ea021651e19fcddb, type: 3}
   reindeerPrefab: {fileID: 4478695475819897668, guid: 71e58aa924e3c224ea021651e19fcddb, type: 3}
   bossPrefab: {fileID: 4478695475819897668, guid: 71e58aa924e3c224ea021651e19fcddb, type: 3}
+  spawnArea: {fileID: 1757498573}
 --- !u!1001 &1050554420
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -180,6 +180,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 397474597}
+    - target: {fileID: 3611177944922643821, guid: 8a3683dcc3cdac94288caa0eba08e442, type: 3}
+      propertyPath: lineRenderer
+      value: 
+      objectReference: {fileID: 1673109821}
     - target: {fileID: 6030874380476005557, guid: 8a3683dcc3cdac94288caa0eba08e442, type: 3}
       propertyPath: m_Name
       value: Square
@@ -381,6 +385,42 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1659301824}
   m_CullTransparentMesh: 1
+--- !u!120 &1673109821 stripped
+LineRenderer:
+  m_CorrespondingSourceObject: {fileID: 7795571382916554380, guid: 8a3683dcc3cdac94288caa0eba08e442, type: 3}
+  m_PrefabInstance: {fileID: 1050554420}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1757498573
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1757498574}
+  m_Layer: 0
+  m_Name: Spawn Area
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1757498574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757498573}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 25, y: 25, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2118905630
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,6 +963,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8972078704125529407, guid: 1e0e7cd1924ef8e49b84a7be75d71953, type: 3}
+      propertyPath: orthographic size
+      value: 9.77
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -997,3 +1041,4 @@ SceneRoots:
   - {fileID: 1050554420}
   - {fileID: 5744787431942059119}
   - {fileID: 2118905634}
+  - {fileID: 1757498574}
