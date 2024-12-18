@@ -84,13 +84,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Upgrade Effects
-    public void IncreaseMaceSpeed(float amount)
-    {
-        maceFollowSpeed += amount;
-        Debug.Log($"Mace speed increased to {maceFollowSpeed}!");
-    }
-
+   public void IncreaseSpeed(int amount){
+    moveSpeed+=amount;
+   }
+   
     public void IncreaseMaceDamage(float multiplier)
     {
         maceDamageMultiplier += multiplier;

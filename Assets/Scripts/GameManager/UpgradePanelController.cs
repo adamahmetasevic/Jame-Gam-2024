@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;  
 
 public class UpgradePanelController : MonoBehaviour
 {
@@ -14,23 +15,35 @@ public class UpgradePanelController : MonoBehaviour
 
     // Show the panel with upgrade choices
     public void ShowUpgrades(List<UpgradeData> upgrades, System.Action<UpgradeData> callback)
+{
+    upgradePanel.SetActive(true);
+    ClearExistingButtons();
+
+    availableUpgrades = upgrades;
+    onUpgradeSelected = callback;
+
+    foreach (UpgradeData upgrade in upgrades)
     {
-        upgradePanel.SetActive(true);
-        ClearExistingButtons();
+        GameObject buttonObj = Instantiate(upgradeButtonPrefab, upgradeButtonParent);
+        Button button = buttonObj.GetComponent<Button>();
+        
+        // Use TextMeshProUGUI instead of Text
+        TextMeshProUGUI buttonText = buttonObj.GetComponentInChildren<TextMeshProUGUI>();
 
-        availableUpgrades = upgrades;
-        onUpgradeSelected = callback;
-
-        foreach (UpgradeData upgrade in upgrades)
+        if (buttonText != null)
         {
-            GameObject buttonObj = Instantiate(upgradeButtonPrefab, upgradeButtonParent);
-            Button button = buttonObj.GetComponent<Button>();
-            Text buttonText = buttonObj.GetComponentInChildren<Text>();
-
-            buttonText.text = upgrade.upgradeName + "\n" + upgrade.description;
-            button.onClick.AddListener(() => OnUpgradeSelected(upgrade));
+            buttonText.text = $"{upgrade.upgradeName}\n{upgrade.description}";
         }
+        else
+        {
+            Debug.LogError("Button prefab is missing a TextMeshProUGUI component.");
+        }
+
+        // Capture the current upgrade instance to prevent closure issue in the lambda
+        UpgradeData capturedUpgrade = upgrade;
+        button.onClick.AddListener(() => OnUpgradeSelected(capturedUpgrade));
     }
+}
 
     private void OnUpgradeSelected(UpgradeData selectedUpgrade)
     {

@@ -51,4 +51,11 @@ public class CandyCaneMace : MonoBehaviour
         // Damage scales with velocity
         return Mathf.Clamp(velocity * 5f, 0f, 100f); // Scale damage
     }
+
+     public void IncreaseMaceSpeed(float amount)
+    {
+        followSpeed += amount;
+        Debug.Log($"Mace speed increased to {followSpeed}!");
+    }
+
 }
