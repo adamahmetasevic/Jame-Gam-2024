@@ -117,6 +117,7 @@ public class Enemy : MonoBehaviour
                 Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
                 rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
             }
+            
         }
     }
 

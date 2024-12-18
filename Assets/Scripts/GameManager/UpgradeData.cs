@@ -10,12 +10,14 @@ public class UpgradeData : ScriptableObject
     public UpgradeType upgradeType;     // Enum to classify upgrades
     public int value;                 // Generic value (e.g., damage boost, cooldown reduction)
 
-    public enum UpgradeType
-    {
-        MaceSpeedIncrease,
-        MaceProjectileAttack,
-        HealthIncrease,
-        MovementSpeedBoost,
-        // Add more upgrade types here
-    }
+public enum UpgradeType
+{
+    MaceSpeedIncrease,
+    ProjectileCountIncrease,
+    ProjectileSpeedIncrease,
+    ProjectileSizeIncrease,
+    HealthIncrease,
+    MovementSpeedBoost,
+}
+
 }

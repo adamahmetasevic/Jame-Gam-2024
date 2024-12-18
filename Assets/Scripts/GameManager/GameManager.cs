@@ -88,25 +88,31 @@ public class GameManager : MonoBehaviour
         ResumeGame();
     }
 
-    private void ApplyUpgradeEffect(UpgradeData upgrade)
+private void ApplyUpgradeEffect(UpgradeData upgrade)
+{
+    switch (upgrade.upgradeType)
     {
-        switch (upgrade.upgradeType)
-        {
-            case UpgradeData.UpgradeType.MaceSpeedIncrease:
-                FindObjectOfType<CandyCaneMace>().IncreaseMaceSpeed(upgrade.value);
-                break;
-            case UpgradeData.UpgradeType.MaceProjectileAttack:
-                FindObjectOfType<CandyCaneMace>().EnableMaceProjectileAttack();
-                break;
-            case UpgradeData.UpgradeType.HealthIncrease:
-                FindObjectOfType<PlayerController>().IncreaseHealth(upgrade.value);
-                break;
-            case UpgradeData.UpgradeType.MovementSpeedBoost:
+        case UpgradeData.UpgradeType.MaceSpeedIncrease:
+            FindObjectOfType<CandyCaneMace>().IncreaseMaceSpeed(upgrade.value);
+            break;
+        case UpgradeData.UpgradeType.HealthIncrease:
+            FindObjectOfType<PlayerController>().IncreaseHealth(upgrade.value);
+            break;
+        case UpgradeData.UpgradeType.MovementSpeedBoost:
             FindObjectOfType<PlayerController>().IncreaseSpeed(upgrade.value);
-                break;
-            // Add more cases as needed
-        }
+            break;
+        case UpgradeData.UpgradeType.ProjectileCountIncrease:
+            FindObjectOfType<CandyCaneMace>().UpgradeProjectileCount(upgrade.value);
+            break;
+        case UpgradeData.UpgradeType.ProjectileSpeedIncrease:
+            FindObjectOfType<CandyCaneMace>().UpgradeProjectileSpeed(upgrade.value);
+            break;
+        case UpgradeData.UpgradeType.ProjectileSizeIncrease:
+            FindObjectOfType<CandyCaneMace>().UpgradeProjectileSize(upgrade.value);
+            break;
+        // Add more cases as needed
     }
+}
 
     private void PauseGame()
     {
