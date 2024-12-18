@@ -77,13 +77,16 @@ public class GameManager : MonoBehaviour
         switch (upgrade.upgradeType)
         {
             case UpgradeData.UpgradeType.MaceSpeedIncrease:
-                FindObjectOfType<PlayerController>().IncreaseMaceSpeed(upgrade.value);
+                FindObjectOfType<CandyCaneMace>().IncreaseMaceSpeed(upgrade.value);
                 break;
             case UpgradeData.UpgradeType.MaceProjectileAttack:
                 FindObjectOfType<PlayerController>().EnableMaceProjectileAttack();
                 break;
             case UpgradeData.UpgradeType.HealthIncrease:
                 FindObjectOfType<PlayerController>().IncreaseHealth(upgrade.value);
+                break;
+            case UpgradeData.UpgradeType.MovementSpeedBoost:
+            FindObjectOfType<PlayerController>().IncreaseSpeed(upgrade.value);
                 break;
             // Add more cases as needed
         }
