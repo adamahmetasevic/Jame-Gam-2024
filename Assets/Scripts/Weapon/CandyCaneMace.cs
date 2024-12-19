@@ -16,7 +16,7 @@ public class CandyCaneMace : MonoBehaviour
     // Upgradable properties
     private int projectileCount = 1; // Number of projectiles to shoot
     private float projectileSpeed = 10f; // Speed of the projectiles
-    private float projectileSize = 1f; // Size multiplier for the projectiles
+    private float projectileSize = 2f; // Size multiplier for the projectiles
 
     void Start()
     {
