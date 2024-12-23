@@ -60,6 +60,14 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Player has died!");
+
+        // Trigger defeat UI through DefeatManager
+        DefeatManager defeatManager = FindObjectOfType<DefeatManager>();
+        if (defeatManager != null)
+        {
+            defeatManager.TriggerDefeat();
+        }
+
         Destroy(gameObject); // Destroy player object
         // Optional: Trigger a game over screen or reset the level
     }
