@@ -129,10 +129,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   mace: {fileID: 0}
-  maceFollowSpeed: 5
-  maceBaseDamage: 5
-  maceDamageMultiplier: 1
-  canShootProjectiles: 0
 --- !u!114 &2797275847992529689
 MonoBehaviour:
   m_ObjectHideFlags: 0
