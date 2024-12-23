@@ -139,6 +139,7 @@ public class WaveManager : MonoBehaviour
             Instantiate(enemyToSpawn, spawnPoint.position, Quaternion.identity);
         }
     }
+    
 
     private IEnumerator SpawnSantaBoss()
     {
