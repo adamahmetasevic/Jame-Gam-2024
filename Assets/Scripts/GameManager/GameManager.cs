@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement; // For scene management
 using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
@@ -18,16 +19,13 @@ public class GameManager : MonoBehaviour
 
     public GameTimer gameTimer;
 
-    void Start()
+    private void Start()
     {
         playerXP = 0;
         currentLevel = 1;
         Time.timeScale = 1f; // Ensure game starts unpaused
 
-
         // NAMU TIMER ADDITION
-        // Ensure gameTimer is initialized
-        
         if (gameTimer != null)
         {
             gameTimer.ResetTimer(); // Reset the timer
@@ -37,6 +35,9 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("GameTimer reference is missing!");
         }
+
+        // Subscribe to the sceneLoaded event to handle XP reset when loading the MainScene
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     public void AddXP(int xpAmount)
@@ -88,37 +89,37 @@ public class GameManager : MonoBehaviour
         ResumeGame();
     }
 
-private void ApplyUpgradeEffect(UpgradeData upgrade)
-{
-    switch (upgrade.upgradeType)
+    private void ApplyUpgradeEffect(UpgradeData upgrade)
     {
-        case UpgradeData.UpgradeType.MaceSpeedIncrease:
-            FindObjectOfType<CandyCaneMace>().IncreaseMaceSpeed(upgrade.value);
-            break;
-        case UpgradeData.UpgradeType.HealthIncrease:
-            FindObjectOfType<PlayerController>().IncreaseHealth(upgrade.value);
-            break;
-        case UpgradeData.UpgradeType.MovementSpeedBoost:
-            FindObjectOfType<PlayerController>().IncreaseSpeed(upgrade.value);
-            break;
-        case UpgradeData.UpgradeType.ProjectileCountIncrease:
-            FindObjectOfType<CandyCaneMace>().UpgradeProjectileCount(upgrade.value);
-            break;
-        case UpgradeData.UpgradeType.ProjectileSpeedIncrease:
-            FindObjectOfType<CandyCaneMace>().UpgradeProjectileSpeed(upgrade.value);
-            break;
-        case UpgradeData.UpgradeType.ProjectileSizeIncrease:
-            FindObjectOfType<CandyCaneMace>().UpgradeProjectileSize(upgrade.value);
-            break;
-        // Add more cases as needed
+        switch (upgrade.upgradeType)
+        {
+            case UpgradeData.UpgradeType.MaceSpeedIncrease:
+                FindObjectOfType<CandyCaneMace>().IncreaseMaceSpeed(upgrade.value);
+                break;
+            case UpgradeData.UpgradeType.HealthIncrease:
+                FindObjectOfType<PlayerController>().IncreaseHealth(upgrade.value);
+                break;
+            case UpgradeData.UpgradeType.MovementSpeedBoost:
+                FindObjectOfType<PlayerController>().IncreaseSpeed(upgrade.value);
+                break;
+            case UpgradeData.UpgradeType.ProjectileCountIncrease:
+                FindObjectOfType<CandyCaneMace>().UpgradeProjectileCount(upgrade.value);
+                break;
+            case UpgradeData.UpgradeType.ProjectileSpeedIncrease:
+                FindObjectOfType<CandyCaneMace>().UpgradeProjectileSpeed(upgrade.value);
+                break;
+            case UpgradeData.UpgradeType.ProjectileSizeIncrease:
+                FindObjectOfType<CandyCaneMace>().UpgradeProjectileSize(upgrade.value);
+                break;
+            // Add more cases as needed
+        }
     }
-}
 
     private void PauseGame()
     {
         isGamePaused = true;
         Time.timeScale = 0f;
-        
+
         // NAMU TIMER ADDITION
         if (gameTimer != null)
         {
@@ -134,7 +135,7 @@ private void ApplyUpgradeEffect(UpgradeData upgrade)
     {
         isGamePaused = false;
         Time.timeScale = 1f;
-        
+
         // NAMU TIMER ADDITION
         if (gameTimer != null)
         {
@@ -144,5 +145,23 @@ private void ApplyUpgradeEffect(UpgradeData upgrade)
         {
             Debug.LogError("GameTimer is null while trying to resume the game.");
         }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Reset XP and level progression if MainScene is loaded
+        if (scene.name == "MainScene")
+        {
+            Debug.Log("MainScene loaded: Resetting XP and level progression.");
+            playerXP = 0;
+            currentLevel = 1;
+            xpToNextLevel = 100; // Reset to initial value
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // Unsubscribe from the sceneLoaded event to prevent memory leaks
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }

@@ -129,25 +129,29 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void Die()
+private void Die()
+{
+    Debug.Log("Enemy has been defeated!");
+
+    // Grant XP when enemy dies
+    if (gameManager != null)
     {
-        Debug.Log("Enemy has been defeated!");
-
-        // Grant XP when enemy dies
-        if (gameManager != null)
-        {
-            gameManager.AddXP(100);
-        }
-
-        // If this is the Santa Boss, load the victory scene
-        if (isSantaBoss)
-        {
-            Debug.Log("Santa Boss defeated! Loading victory scene...");
-            SceneManager.LoadScene("VictoryScene");
-        }
-
-        Destroy(gameObject);
+        gameManager.AddXP(100);
     }
+
+    // If this is the Santa Boss, show the victory UI
+    if (isSantaBoss)
+    {
+        Debug.Log("Santa Boss defeated! Showing victory UI...");
+        VictoryUIManager victoryUIManager = FindObjectOfType<VictoryUIManager>();
+        if (victoryUIManager != null)
+        {
+            victoryUIManager.ShowVictoryUI(); // Show the victory UI and pause the game
+        }
+    }
+
+    Destroy(gameObject);
+}
 
     private System.Collections.IEnumerator DamageFlash()
     {
