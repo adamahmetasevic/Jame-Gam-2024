@@ -1517,6 +1517,18 @@ PrefabInstance:
       propertyPath: orthographic size
       value: 9.77
       objectReference: {fileID: 0}
+    - target: {fileID: 8972078704125529407, guid: 1e0e7cd1924ef8e49b84a7be75d71953, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.627451
+      objectReference: {fileID: 0}
+    - target: {fileID: 8972078704125529407, guid: 1e0e7cd1924ef8e49b84a7be75d71953, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.47450984
+      objectReference: {fileID: 0}
+    - target: {fileID: 8972078704125529407, guid: 1e0e7cd1924ef8e49b84a7be75d71953, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.1137255
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2295,8 +2307,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4281650750605549739, guid: 9a19a4a90279451429bb7b1472460b64, type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550378200295699877, guid: 9a19a4a90279451429bb7b1472460b64, type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 9178062029307426035, guid: 9a19a4a90279451429bb7b1472460b64, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a19a4a90279451429bb7b1472460b64, type: 3}
