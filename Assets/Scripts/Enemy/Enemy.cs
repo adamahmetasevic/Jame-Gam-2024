@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class Enemy : MonoBehaviour
     [Header("Movement Settings")]
     public float moveSpeed = 3f;        // Speed at which the enemy moves
     public float minDistanceToPlayer = 5f; // Minimum distance to maintain from player
-    public float maxDistanceToPlayer = 10f; // Distance at which enemy starts following
     private bool isFacingRight = true;  // Track facing direction
 
     [Header("Knockback Settings")]
@@ -30,6 +30,8 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private GameManager gameManager;
 
+    [Header("Victory Settings")]
+    public bool isSantaBoss = false; // Flag to determine if this is the Santa Boss
 
     void Start()
     {
@@ -58,30 +60,18 @@ public class Enemy : MonoBehaviour
 
     private void MoveTowardPlayer()
     {
-        // Calculate distance to player
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-        
         // Calculate direction to player
         Vector2 direction = (player.position - transform.position).normalized;
 
-        // Only move if we're too far from the player
+        // Always move toward the player unless too close
+        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
         if (distanceToPlayer > minDistanceToPlayer)
         {
-            // If we're within the max distance, move toward player
-            if (distanceToPlayer < maxDistanceToPlayer)
-            {
-                rb.velocity = direction * moveSpeed;
-            }
-            else
-            {
-                // Stop moving if we're too far
-                rb.velocity = Vector2.zero;
-            }
+            rb.velocity = direction * moveSpeed;
         }
         else
         {
-            // Too close to player, move away slightly
-            rb.velocity = -direction * moveSpeed;
+            rb.velocity = Vector2.zero;
         }
 
         // Handle sprite flipping
@@ -117,7 +107,6 @@ public class Enemy : MonoBehaviour
                 Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
                 rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
             }
-            
         }
     }
 
@@ -127,7 +116,7 @@ public class Enemy : MonoBehaviour
         return Mathf.Clamp(damage, 5f, 200f);
     }
 
-public void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
         Debug.Log($"Enemy took {damage} damage! Current health: {currentHealth}");
@@ -142,15 +131,22 @@ public void TakeDamage(float damage)
 
     private void Die()
     {
-            Debug.Log("Enemy has been defeated!");
-    
-    // Grant XP when enemy dies (enough to trigger a level up)
-    if (gameManager != null)
-    {
-        gameManager.AddXP(100); // This will grant 100 XP, which should trigger a level up
-    }
-    
-    Destroy(gameObject);
+        Debug.Log("Enemy has been defeated!");
+
+        // Grant XP when enemy dies
+        if (gameManager != null)
+        {
+            gameManager.AddXP(100);
+        }
+
+        // If this is the Santa Boss, load the victory scene
+        if (isSantaBoss)
+        {
+            Debug.Log("Santa Boss defeated! Loading victory scene...");
+            SceneManager.LoadScene("VictoryScene");
+        }
+
+        Destroy(gameObject);
     }
 
     private System.Collections.IEnumerator DamageFlash()
