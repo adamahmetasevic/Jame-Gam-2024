@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 263908310506052539}
   - component: {fileID: 6705945647538225001}
   m_Layer: 0
-  m_Name: bullet
+  m_Name: Peppermint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: -714570955
   m_SortingLayer: 2
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 2b75fdb5a161918499614e87824abe17, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 26bd55d8abac9c04d954d94757a190a8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -159,6 +159,6 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00028520823, y: 0}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.055619657
+  m_Radius: 0.5
