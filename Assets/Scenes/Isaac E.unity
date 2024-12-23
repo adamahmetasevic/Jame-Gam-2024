@@ -628,11 +628,11 @@ MonoBehaviour:
   currentWave: 1
   totalWaves: 15
   waveInterval: 60
-  spawnRadius: 10
   elvesPrefab: {fileID: 4478695475819897668, guid: 71e58aa924e3c224ea021651e19fcddb, type: 3}
   snowmenPrefab: {fileID: 4478695475819897668, guid: 71e58aa924e3c224ea021651e19fcddb, type: 3}
   reindeerPrefab: {fileID: 4478695475819897668, guid: 71e58aa924e3c224ea021651e19fcddb, type: 3}
   bossPrefab: {fileID: 4478695475819897668, guid: 71e58aa924e3c224ea021651e19fcddb, type: 3}
+  spawnPoints: []
 --- !u!1 &893449691
 GameObject:
   m_ObjectHideFlags: 0
@@ -1637,6 +1637,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 454669077692139133, guid: 8a59ebb2191ba1e458fcd401cd6ee225, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2528650679792855154, guid: 8a59ebb2191ba1e458fcd401cd6ee225, type: 3}
       propertyPath: mace
       value: 

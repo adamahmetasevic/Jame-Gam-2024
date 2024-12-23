@@ -73,8 +73,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -714570955
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 99b7f2f35c6c37d489639495e10e01b0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -102,13 +102,13 @@ MonoBehaviour:
   maxHealth: 100
   moveSpeed: 3
   minDistanceToPlayer: 3
-  maxDistanceToPlayer: 10
   knockbackForce: 1
   projectilePrefab: {fileID: 7955273834683194061, guid: d90779450e8a0964aaa92503b63c4db0, type: 3}
   shootPoint: {fileID: 7565128640590171612}
   fireRate: 2
   projectileSpeed: 10.41
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  isSantaBoss: 0
 --- !u!50 &2206372555501135696
 Rigidbody2D:
   serializedVersion: 4
