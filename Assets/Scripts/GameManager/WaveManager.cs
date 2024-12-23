@@ -1,13 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class WaveManager : MonoBehaviour
 {
     [Header("Wave Settings")]
     public int currentWave = 1;           // Current wave
-    public int totalWaves = 15;            // Total number of waves
-    public float waveInterval = 60f;       // Time interval between waves in seconds
-    public float spawnRadius = 10f;        // Radius around the spawner for enemy spawn
+    public int totalWaves = 15;           // Total number of waves
+    public float waveInterval = 60f;      // Time interval between waves in seconds
     private float currentSpawnRate = 0.5f; // Adjusted spawn rate (less enemies per second)
 
     [Header("Enemy Prefabs")]
@@ -16,10 +16,19 @@ public class WaveManager : MonoBehaviour
     public GameObject reindeerPrefab;
     public GameObject bossPrefab;  // Santa Boss prefab
 
+    [Header("Spawn Points")]
+    public List<Transform> spawnPoints; // List of predefined spawn points
+
     private bool isSpawning = false;
 
     void Start()
     {
+        if (spawnPoints == null || spawnPoints.Count == 0)
+        {
+            Debug.LogError("No spawn points assigned! Please add spawn points in the inspector.");
+            return;
+        }
+
         StartCoroutine(ManageWaves());
     }
 
@@ -60,10 +69,10 @@ public class WaveManager : MonoBehaviour
         switch (waveNumber)
         {
             case 1:
-                yield return StartCoroutine(SpawnEnemies(elvesPrefab, spawnRate));
+                yield return StartCoroutine(SpawnEnemies(snowmenPrefab, spawnRate));
                 break;
             case 2:
-                yield return StartCoroutine(SpawnEnemies(snowmenPrefab, spawnRate));
+                yield return StartCoroutine(SpawnEnemies(elvesPrefab, spawnRate));
                 break;
             case 3:
                 yield return StartCoroutine(SpawnEnemies(reindeerPrefab, spawnRate));
@@ -99,19 +108,10 @@ public class WaveManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1f / spawnRate); // Adjust spawn interval based on rate
+            yield return new WaitForSeconds(1f / spawnRate);
 
-            Vector2 randomSpawnOffset = Random.insideUnitCircle * spawnRadius;
-            Vector3 spawnPosition = transform.position + new Vector3(randomSpawnOffset.x, 0, randomSpawnOffset.y);
-
-            if (IsValidSpawnPosition(spawnPosition))
-            {
-                Instantiate(enemyType, spawnPosition, Quaternion.identity);
-            }
-            else
-            {
-                Debug.LogWarning("Invalid spawn position. Retrying next interval.");
-            }
+            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+            Instantiate(enemyType, spawnPoint.position, Quaternion.identity);
         }
     }
 
@@ -121,17 +121,8 @@ public class WaveManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1f / spawnRate);
 
-            Vector2 randomSpawnOffset = Random.insideUnitCircle * spawnRadius;
-            Vector3 spawnPosition = transform.position + new Vector3(randomSpawnOffset.x, 0, randomSpawnOffset.y);
-
-            if (IsValidSpawnPosition(spawnPosition))
-            {
-                Instantiate(Random.Range(0f, 1f) > 0.5f ? enemyType1 : enemyType2, spawnPosition, Quaternion.identity);
-            }
-            else
-            {
-                Debug.LogWarning("Invalid spawn position. Retrying next interval.");
-            }
+            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+            Instantiate(Random.Range(0f, 1f) > 0.5f ? enemyType1 : enemyType2, spawnPoint.position, Quaternion.identity);
         }
     }
 
@@ -141,48 +132,21 @@ public class WaveManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1f / spawnRate);
 
-            Vector2 randomSpawnOffset = Random.insideUnitCircle * spawnRadius;
-            Vector3 spawnPosition = transform.position + new Vector3(randomSpawnOffset.x, 0, randomSpawnOffset.y);
-
-            if (IsValidSpawnPosition(spawnPosition))
-            {
-                GameObject enemyToSpawn = Random.Range(0f, 1f) > 0.66f
-                    ? enemyType1
-                    : (Random.Range(0f, 1f) > 0.5f ? enemyType2 : enemyType3);
-                Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
-            }
-            else
-            {
-                Debug.LogWarning("Invalid spawn position. Retrying next interval.");
-            }
+            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+            GameObject enemyToSpawn = Random.Range(0f, 1f) > 0.66f
+                ? enemyType1
+                : (Random.Range(0f, 1f) > 0.5f ? enemyType2 : enemyType3);
+            Instantiate(enemyToSpawn, spawnPoint.position, Quaternion.identity);
         }
     }
 
     private IEnumerator SpawnSantaBoss()
     {
-        Debug.LogWarning("Invalid boss spawn position. Retrying in 5 seconds."); // Log a message about retrying
-        yield return new WaitForSeconds(5f); // Wait before retrying
+        Debug.LogWarning("Invalid boss spawn position. Retrying in 5 seconds.");
+        yield return new WaitForSeconds(5f);
 
-        // Now retry the spawning
-        Vector2 randomSpawnOffset = Random.insideUnitCircle * spawnRadius;
-        Vector3 spawnPosition = transform.position + new Vector3(randomSpawnOffset.x, 0, randomSpawnOffset.y);
-
-        if (IsValidSpawnPosition(spawnPosition))
-        {
-            Instantiate(bossPrefab, spawnPosition, Quaternion.identity);
-        }
-        else
-        {
-            Debug.LogWarning("Invalid boss spawn position again. Retrying...");
-            StartCoroutine(SpawnSantaBoss()); // Retry spawning
-        }
-    }
-
-    private bool IsValidSpawnPosition(Vector3 position)
-    {
-        // Check if the spawn position is free from obstacles or other enemies
-        Collider[] colliders = Physics.OverlapSphere(position, 1f); // Check within a 1-unit radius to avoid overlap
-        return colliders.Length == 0; // If no colliders, it's valid
+        Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+        Instantiate(bossPrefab, spawnPoint.position, Quaternion.identity);
     }
 
     public void StopSpawning()
