@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60385429a14d67f40a22173a02274f0b, type: 3}
-  m_Name: ProjectileSpeed
+  m_Name: MaceDamage
   m_EditorClassIdentifier: 
-  upgradeName: FASTER PEPPERMINTS
-  description: MINT PROJECTILES ARE QUICKER
+  upgradeName: CANDY CANE DAMAGE
+  description: DAAAAAAAAMAGE
   icon: {fileID: 0}
-  upgradeType: 2
-  value: 5
-  maxValue: 20
+  upgradeType: 8
+  value: 2
+  maxValue: 10

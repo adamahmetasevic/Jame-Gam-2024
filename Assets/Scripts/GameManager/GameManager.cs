@@ -64,21 +64,79 @@ public class GameManager : MonoBehaviour
     }
 
     private void ShowUpgradeOptions()
+{
+    // Pick 2 or 3 random upgrades from all available upgrades
+    List<UpgradeData> upgradesToShow = new List<UpgradeData>();
+    
+    while (upgradesToShow.Count < 3 && upgradesToShow.Count < allUpgrades.Count)
     {
-        // Pick 2 or 3 random upgrades from all available upgrades
-        List<UpgradeData> upgradesToShow = new List<UpgradeData>();
-        while (upgradesToShow.Count < 3 && upgradesToShow.Count < allUpgrades.Count)
+        UpgradeData randomUpgrade = allUpgrades[Random.Range(0, allUpgrades.Count)];
+
+        // Check if the upgrade has already reached its limit before adding it
+        if (!HasReachedUpgradeLimit(randomUpgrade))
         {
-            UpgradeData randomUpgrade = allUpgrades[Random.Range(0, allUpgrades.Count)];
             if (!upgradesToShow.Contains(randomUpgrade))
             {
                 upgradesToShow.Add(randomUpgrade);
             }
         }
-
-        // Show upgrade panel with the choices
-        upgradePanelController.ShowUpgrades(upgradesToShow, OnUpgradeSelected);
     }
+
+    // Show upgrade panel with the choices
+    upgradePanelController.ShowUpgrades(upgradesToShow, OnUpgradeSelected);
+}
+
+public bool HasReachedUpgradeLimit(UpgradeData upgrade)
+{
+    try
+    {
+        CandyCaneMace candyCaneMace = FindObjectOfType<CandyCaneMace>();
+        PlayerController playerController = FindObjectOfType<PlayerController>();
+        MaceProjectile maceProjectile = FindObjectOfType<MaceProjectile>();
+
+        // Check if required components exist before checking limits
+        if (candyCaneMace == null || playerController == null || maceProjectile == null)
+        {
+            Debug.LogWarning("One or more required components not found: " +
+                           $"CandyCaneMace: {candyCaneMace != null}, " +
+                           $"PlayerController: {playerController != null}, " +
+                           $"MaceProjectile: {maceProjectile != null}");
+            return false; // Return false to allow upgrade if components are missing
+        }
+
+        switch (upgrade.upgradeType)
+        {
+            case UpgradeData.UpgradeType.MaceSpeedIncrease:
+                return candyCaneMace.GetMaceSpeed() >= upgrade.maxValue;
+            case UpgradeData.UpgradeType.MovementSpeedBoost:
+                return playerController.GetMovementSpeed() >= upgrade.maxValue;
+            case UpgradeData.UpgradeType.MaceSizeIncrease:
+                return candyCaneMace.GetMaceSize() >= upgrade.maxValue;
+            case UpgradeData.UpgradeType.ProjectileCountIncrease:
+                return candyCaneMace.GetProjectileCount() >= upgrade.maxValue;
+            case UpgradeData.UpgradeType.ProjectileSpeedIncrease:
+                return candyCaneMace.GetProjectileSpeed() >= upgrade.maxValue;
+            case UpgradeData.UpgradeType.ProjectileSizeIncrease:
+                return candyCaneMace.GetProjectileSize() >= upgrade.maxValue;
+            case UpgradeData.UpgradeType.ProjectileDamageIncrease:
+                return candyCaneMace.GetProjectileDamage() >= upgrade.maxValue;
+            case UpgradeData.UpgradeType.MaceDamageMultiplierIncrease:
+                return candyCaneMace.GetMaceDamageMultiplier() >= upgrade.maxValue;
+            default:
+                Debug.LogWarning($"Unknown upgrade type: {upgrade.upgradeType}");
+                return false;
+        }
+    }
+    catch (System.Exception e)
+    {
+        Debug.LogError($"Error in HasReachedUpgradeLimit: {e.Message}");
+        return false; // Return false to allow upgrade if there's an error
+    }
+}
+
+
+
+
 
     private void OnUpgradeSelected(UpgradeData upgrade)
     {
@@ -90,30 +148,40 @@ public class GameManager : MonoBehaviour
     }
 
     private void ApplyUpgradeEffect(UpgradeData upgrade)
+{
+    switch (upgrade.upgradeType)
     {
-        switch (upgrade.upgradeType)
-        {
-            case UpgradeData.UpgradeType.MaceSpeedIncrease:
-                FindObjectOfType<CandyCaneMace>().IncreaseMaceSpeed(upgrade.value);
-                break;
-            case UpgradeData.UpgradeType.HealthIncrease:
-                FindObjectOfType<PlayerController>().IncreaseHealth(upgrade.value);
-                break;
-            case UpgradeData.UpgradeType.MovementSpeedBoost:
-                FindObjectOfType<PlayerController>().IncreaseSpeed(upgrade.value);
-                break;
-            case UpgradeData.UpgradeType.ProjectileCountIncrease:
-                FindObjectOfType<CandyCaneMace>().UpgradeProjectileCount(upgrade.value);
-                break;
-            case UpgradeData.UpgradeType.ProjectileSpeedIncrease:
-                FindObjectOfType<CandyCaneMace>().UpgradeProjectileSpeed(upgrade.value);
-                break;
-            case UpgradeData.UpgradeType.ProjectileSizeIncrease:
-                FindObjectOfType<CandyCaneMace>().UpgradeProjectileSize(upgrade.value);
-                break;
-            // Add more cases as needed
-        }
+        case UpgradeData.UpgradeType.MaceSpeedIncrease:
+            FindObjectOfType<CandyCaneMace>().IncreaseMaceSpeed(upgrade.value);
+            break;
+        case UpgradeData.UpgradeType.HealthIncrease:
+            FindObjectOfType<PlayerController>().IncreaseHealth((int)upgrade.value);
+            break;
+        case UpgradeData.UpgradeType.MovementSpeedBoost:
+            FindObjectOfType<PlayerController>().IncreaseSpeed((int)upgrade.value);
+            break;
+        case UpgradeData.UpgradeType.ProjectileCountIncrease:
+            FindObjectOfType<CandyCaneMace>().UpgradeProjectileCount((int)upgrade.value);
+            break;
+        case UpgradeData.UpgradeType.ProjectileSpeedIncrease:
+            FindObjectOfType<CandyCaneMace>().UpgradeProjectileSpeed(upgrade.value);
+            break;
+        case UpgradeData.UpgradeType.ProjectileSizeIncrease:
+            FindObjectOfType<CandyCaneMace>().UpgradeProjectileSize(upgrade.value);
+            break;
+        case UpgradeData.UpgradeType.MaceSizeIncrease:
+            FindObjectOfType<CandyCaneMace>().UpgradeMaceSize(upgrade.value); 
+            break;
+        case UpgradeData.UpgradeType.ProjectileDamageIncrease:
+            FindObjectOfType<CandyCaneMace>().UpgradeProjectileDamage(upgrade.value);
+            break;
+        case UpgradeData.UpgradeType.MaceDamageMultiplierIncrease:
+            FindObjectOfType<CandyCaneMace>().UpgradeMaceDamageMultiplier(upgrade.value); 
+            break;
+
     }
+}
+
 
     private void PauseGame()
     {

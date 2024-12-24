@@ -15,5 +15,6 @@ MonoBehaviour:
   upgradeName: Movement Speed Boost
   description: SPEEEEEEEEEED
   icon: {fileID: 0}
-  upgradeType: 5
+  upgradeType: 6
   value: 5
+  maxValue: 20
