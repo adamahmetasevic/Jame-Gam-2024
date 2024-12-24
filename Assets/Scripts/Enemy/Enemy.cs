@@ -42,7 +42,6 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
-        gameManager = FindObjectOfType<GameManager>();
     }
 
     void Update()
@@ -134,13 +133,10 @@ public class Enemy : MonoBehaviour
 
 private void Die()
 {
-    Debug.Log("Enemy has been defeated!");
+    StopAllCoroutines(); 
 
     // Grant XP when enemy dies
-    if (gameManager != null)
-    {
-        gameManager.AddXP(100);
-    }
+    GameManager.Instance.AddXP(75);
 
     // If this is the Santa Boss, show the victory UI
     if (isSantaBoss)
@@ -156,12 +152,16 @@ private void Die()
     Destroy(gameObject);
 }
 
-    private System.Collections.IEnumerator DamageFlash()
+ private System.Collections.IEnumerator DamageFlash()
+{
+    spriteRenderer.color = damageFlashColor;
+    yield return new WaitForSeconds(0.1f);
+    if (this != null)
     {
-        spriteRenderer.color = damageFlashColor;
-        yield return new WaitForSeconds(0.1f);
         spriteRenderer.color = Color.white;
     }
+}
+
 
     private void Shoot()
     {

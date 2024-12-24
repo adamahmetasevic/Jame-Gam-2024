@@ -105,8 +105,8 @@ MonoBehaviour:
   knockbackForce: 1
   projectilePrefab: {fileID: 7955273834683194061, guid: 76a9a65a9b39aab48a6f8fb9f7821479, type: 3}
   shootPoint: {fileID: 7565128640590171612}
-  fireRate: 4
-  projectileSpeed: 7.34
+  fireRate: 1.19
+  projectileSpeed: 11.37
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
   isSantaBoss: 0
 --- !u!50 &2206372555501135696

@@ -59,13 +59,20 @@ public class CandyCaneMace : MonoBehaviour
         rb.drag = 2f;
     }
 
-    public float GetDamage()
+public float GetDamage()
+{
+    if (float.IsNaN(rb.position.x) || float.IsNaN(rb.position.y))
     {
-        float velocity = (rb.position - previousPosition).magnitude / Time.fixedDeltaTime;
-        previousPosition = rb.position;
-
-        return Mathf.Clamp(velocity * 5f * maceDamageMultiplier, 0f, 100f); // Adjust damage with the multiplier
+        Debug.LogError("Mace position contains NaN values!");
+        return 0f;
     }
+
+    float velocity = (rb.position - previousPosition).magnitude / Time.fixedDeltaTime;
+    previousPosition = rb.position;
+
+    return Mathf.Clamp(velocity * 5f * maceDamageMultiplier, 0f, 100f);
+}
+
 
 
 public void UpgradeProjectileDamage(float amount) 
@@ -122,6 +129,18 @@ public void UpgradeProjectileDamage(float amount)
 
     void ShootProjectiles()
 {
+    if (projectilePrefab == null)
+{
+    Debug.LogError("Projectile prefab is not assigned!");
+    return;
+}
+if (player == null)
+{
+    Debug.LogError("Player transform is null!");
+    return;
+}
+
+
     if (projectileCount <= 0 || player == null) return;
 
     // Get the mouse position in world coordinates
@@ -164,11 +183,15 @@ public void UpgradeProjectileDamage(float amount)
         GameObject projectileObj = Instantiate(projectilePrefab, rb.position, Quaternion.identity);
         
         // Get the MaceProjectile component and set its damage
-        MaceProjectile maceProjectile = projectileObj.GetComponent<MaceProjectile>();
-        if (maceProjectile != null)
-        {
-            maceProjectile.SetDamage(projectileDamage);
-        }
+    if (projectileObj.TryGetComponent<MaceProjectile>(out MaceProjectile maceProjectile))
+    {
+        maceProjectile.SetDamage(projectileDamage);
+    }
+else
+{
+    Debug.LogError("Projectile is missing MaceProjectile component!");
+}
+
 
         Rigidbody2D rbProjectile = projectileObj.GetComponent<Rigidbody2D>();
 
