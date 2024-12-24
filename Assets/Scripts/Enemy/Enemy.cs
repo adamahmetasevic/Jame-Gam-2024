@@ -33,6 +33,9 @@ public class Enemy : MonoBehaviour
     [Header("Victory Settings")]
     public bool isSantaBoss = false; // Flag to determine if this is the Santa Boss
 
+
+
+
     void Start()
     {
         currentHealth = maxHealth;
