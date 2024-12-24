@@ -45,12 +45,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: background
-    uniqueID: 3501589853
+  - name: Background
+    uniqueID: 1745357121
     locked: 0
-  - name: sno
-    uniqueID: 4128865609
-    locked: 0
-  - name: UI
-    uniqueID: 2436823635
+  - name: Objects
+    uniqueID: 3580396341
     locked: 0
