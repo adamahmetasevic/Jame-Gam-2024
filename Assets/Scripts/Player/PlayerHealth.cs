@@ -13,24 +13,21 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
 
-        // Initialize the health bar
         healthBar.maxValue = maxHealth;
         healthBar.value = currentHealth;
 
-        // Position the health bar right under the player
         healthBar.transform.position = Camera.main.WorldToScreenPoint(transform.position + healthBarOffset);
     }
 
     void Update()
     {
-        // Update the health bar position to follow the player
         healthBar.transform.position = Camera.main.WorldToScreenPoint(transform.position + healthBarOffset);
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        healthBar.value = currentHealth; // Update health bar UI
+        healthBar.value = currentHealth; 
 
         if (currentHealth <= 0)
         {
@@ -41,7 +38,7 @@ public class PlayerHealth : MonoBehaviour
     public void Heal(int amount)
     {
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
-        healthBar.value = currentHealth; // Update health bar UI
+        healthBar.value = currentHealth;
         Debug.Log($"Player healed by {amount}. Current health: {currentHealth}");
     }
 
@@ -49,7 +46,7 @@ public class PlayerHealth : MonoBehaviour
     {
         maxHealth += amount;
 
-            currentHealth += amount; // Maintain relative health
+            currentHealth += amount; 
         
 
         healthBar.maxValue = maxHealth;
@@ -61,15 +58,13 @@ public class PlayerHealth : MonoBehaviour
     {
         Debug.Log("Player has died!");
 
-        // Trigger defeat UI through DefeatManager
         DefeatManager defeatManager = FindObjectOfType<DefeatManager>();
         if (defeatManager != null)
         {
             defeatManager.TriggerDefeat();
         }
 
-        Destroy(gameObject); // Destroy player object
-        // Optional: Trigger a game over screen or reset the level
+        Destroy(gameObject); 
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -80,7 +75,7 @@ public class PlayerHealth : MonoBehaviour
             if (healObject != null)
             {
                 Heal(healObject.healAmount);
-                Destroy(collision.gameObject); // Remove the heal object after use
+                Destroy(collision.gameObject); 
             }
         }
     }

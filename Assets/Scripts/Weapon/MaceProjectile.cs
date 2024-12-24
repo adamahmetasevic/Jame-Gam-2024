@@ -13,13 +13,11 @@ public class MaceProjectile : MonoBehaviour
 
     }
 
-    // Method to set the damage when the projectile is spawned
     public void SetDamage(float damageValue)
     {
         damage = damageValue;
     }
 
-    // Method to get current damage (if needed)
     public float GetDamage()
     {
         return damage;
@@ -34,7 +32,7 @@ private void OnCollisionEnter2D(Collision2D collision)
         {
             enemy.TakeDamage(damage);
         }
-        if (this != null) Destroy(gameObject); // Ensure the projectile still exists
+        if (this != null) Destroy(gameObject); 
     }
 
     if (collision.gameObject.CompareTag("Obstacle"))

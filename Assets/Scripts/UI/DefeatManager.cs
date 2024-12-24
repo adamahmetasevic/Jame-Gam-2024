@@ -4,8 +4,8 @@ using UnityEngine.SceneManagement;
 public class DefeatManager : MonoBehaviour
 {
     [Header("Defeat UI")]
-    public GameObject defeatUIPanel; // Reference to the defeat UI panel
-    public string mainMenuSceneName = "MainMenu"; // Name of the main menu scene
+    public GameObject defeatUIPanel; 
+    public string mainMenuSceneName = "MainMenu"; 
 
     [Header("Game State")]
     public bool isGamePaused = false;
@@ -14,13 +14,11 @@ public class DefeatManager : MonoBehaviour
     {
         if (defeatUIPanel != null)
         {
-            defeatUIPanel.SetActive(false); // Ensure the defeat UI is hidden at the start
+            defeatUIPanel.SetActive(false); 
         }
     }
 
-    /// <summary>
-    /// Triggers the defeat condition.
-    /// </summary>
+
     public void TriggerDefeat()
     {
         Debug.Log("Defeat triggered!");
@@ -28,27 +26,20 @@ public class DefeatManager : MonoBehaviour
         ShowDefeatUI();
     }
 
-    /// <summary>
-    /// Pauses the game.
-    /// </summary>
+
     private void PauseGame()
     {
         isGamePaused = true;
-        Time.timeScale = 0f; // Freeze time
+        Time.timeScale = 0f; 
     }
 
-    /// <summary>
-    /// Resumes the game.
-    /// </summary>
     private void ResumeGame()
     {
         isGamePaused = false;
-        Time.timeScale = 1f; // Resume time
+        Time.timeScale = 1f; 
     }
 
-    /// <summary>
-    /// Displays the defeat UI.
-    /// </summary>
+
     private void ShowDefeatUI()
     {
         if (defeatUIPanel != null)
@@ -61,21 +52,17 @@ public class DefeatManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Restarts the current scene.
-    /// </summary>
+
     public void RestartScene()
     {
-        ResumeGame(); // Resume time before reloading the scene
+        ResumeGame(); 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    /// <summary>
-    /// Loads the main menu scene.
-    /// </summary>
+ 
     public void LoadMainMenu()
     {
-        ResumeGame(); // Resume time before loading the main menu
+        ResumeGame(); 
         SceneManager.LoadScene(mainMenuSceneName);
     }
 }

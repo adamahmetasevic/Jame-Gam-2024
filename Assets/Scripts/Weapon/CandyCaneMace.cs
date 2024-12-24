@@ -105,17 +105,17 @@ public void UpgradeProjectileDamage(float amount)
 
  public void UpgradeMaceSize(float multiplier)
 {
-    maceSize += multiplier; // Increase the size of the mace
-    transform.localScale = new Vector3(maceSize, maceSize, maceSize); // Apply size change
+    maceSize += multiplier; 
+    transform.localScale = new Vector3(maceSize, maceSize, maceSize);
 
-    maxDistance *= (1 + multiplier);  // Increase the max distance proportionally to the mace size
+    maxDistance *= (1 + multiplier);  
 
     Debug.Log($"Mace size increased to {maceSize}x, max distance adjusted to {maxDistance}!");
 }
 
     public void UpgradeMaceDamageMultiplier(float multiplier)
     {
-        maceDamageMultiplier *= multiplier; // Increase damage multiplier
+        maceDamageMultiplier *= multiplier; 
         Debug.Log($"Mace damage multiplier increased to {maceDamageMultiplier}x!");
     }
 
@@ -143,7 +143,6 @@ if (player == null)
 
     if (projectileCount <= 0 || player == null) return;
 
-    // Get the mouse position in world coordinates
     Vector3 mousePos3D = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
     if (float.IsNaN(mousePos3D.x) || float.IsNaN(mousePos3D.y))
@@ -161,7 +160,6 @@ if (player == null)
         return;
     }
 
-    // Base direction (mouse - player)
     Vector2 baseDirection = (mousePos - playerPos).normalized;
     if (baseDirection == Vector2.zero)
     {
@@ -169,20 +167,16 @@ if (player == null)
         return;
     }
 
-    // Calculate angle spread
     float angleStep = projectileSpread / Mathf.Max(projectileCount - 1, 1);
     float startAngle = -projectileSpread / 2;
 
-    // Shoot projectiles
     for (int i = 0; i < projectileCount; i++)
     {
         float angle = startAngle + i * angleStep;
         Vector2 direction = Quaternion.Euler(0, 0, angle) * baseDirection;
 
-        // Instantiate the projectile
         GameObject projectileObj = Instantiate(projectilePrefab, rb.position, Quaternion.identity);
         
-        // Get the MaceProjectile component and set its damage
     if (projectileObj.TryGetComponent<MaceProjectile>(out MaceProjectile maceProjectile))
     {
         maceProjectile.SetDamage(projectileDamage);
@@ -199,11 +193,9 @@ else
         {
             rbProjectile.velocity = direction * projectileSpeed;
 
-            // Adjust size of projectile
             projectileObj.transform.localScale *= projectileSize;
         }
 
-        // Instantiate the particle effect
         if (muzzleFlashPrefab != null)
         {
             GameObject muzzleFlash = Instantiate(muzzleFlashPrefab, rb.position, Quaternion.identity);
@@ -213,7 +205,6 @@ else
                 particleSystem.Play();
             }
 
-            // Destroy the particle system after its duration
             Destroy(muzzleFlash, 1f);
         }
     }

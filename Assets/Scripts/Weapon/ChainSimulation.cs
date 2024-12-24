@@ -14,7 +14,7 @@ public class ChainSimulation : MonoBehaviour
     {
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = segmentCount;
-        lineRenderer.material.mainTexture.wrapMode = TextureWrapMode.Repeat;  // Ensure tiling works
+        lineRenderer.material.mainTexture.wrapMode = TextureWrapMode.Repeat;  
     }
 
     void Update()
@@ -22,21 +22,19 @@ public class ChainSimulation : MonoBehaviour
         Vector3 start = player.position;
         Vector3 end = weaponEnd.position;
 
-        float totalDistance = Vector3.Distance(start, end);  // Total chain distance
+        float totalDistance = Vector3.Distance(start, end);  
 
         for (int i = 0; i < segmentCount; i++)
         {
             float t = i / (float)(segmentCount - 1);
             Vector3 point = Vector3.Lerp(start, end, t);
 
-            // Add a sine wave effect for curvature
             float waveOffset = Mathf.Sin(t * Mathf.PI * waveFrequency) * waveAmplitude;
             point.y += waveOffset;
 
             lineRenderer.SetPosition(i, point);
         }
 
-        // Adjust texture tiling dynamically based on total chain length
         lineRenderer.material.mainTextureScale = new Vector2(totalDistance, 1);
     }
 }

@@ -38,10 +38,8 @@ public class WaveManager : MonoBehaviour
         {
             Debug.Log($"Wave {currentWave} Starting!");
 
-            // Start spawning enemies for the current wave
             StartCoroutine(SpawnWave(currentWave));
 
-            // Wait for the next wave
             yield return new WaitForSeconds(waveInterval);
 
             currentWave++;

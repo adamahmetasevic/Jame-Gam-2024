@@ -6,17 +6,16 @@ using TMPro;
 
 public class LoadGameButton : MonoBehaviour
 {
-    public Image blackground; // Reference to the fade-to-black background image
-    public TextMeshProUGUI fadeText; // Reference to the text that fades in
+    public Image blackground; 
+    public TextMeshProUGUI fadeText; 
     public ParticleSystem particle1;
     public ParticleSystem particle2;
     public ParticleSystem particle3;
-    public float fadeDuration = 2f; // Duration of the background fade effect
-    public float textDelay = 2f; // Delay before showing the text
-    public float textFadeDuration = 1f; // Duration of the text fade-in effect
+    public float fadeDuration = 2f; 
+    public float textDelay = 2f; 
+    public float textFadeDuration = 1f; 
     public Button skipbutton; 
 
-    // This method will be called when the button is clicked
     public void LoadMainGame()
     {
         StartCoroutine(FadeBackgroundAndText("MainScene"));
@@ -24,14 +23,12 @@ public class LoadGameButton : MonoBehaviour
 
     private IEnumerator FadeBackgroundAndText(string sceneName)
     {
-        // Ensure the background starts fully transparent
-        blackground.color = new Color(0, 0, 0, 0); // Fully transparent
+        blackground.color = new Color(0, 0, 0, 0); 
         blackground.gameObject.SetActive(true);
 
-        // Fade the background to fully black
         float elapsedTime = 0f;
         Color startColor = blackground.color;
-        Color targetColor = Color.black; // Fully black
+        Color targetColor = Color.black; 
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -39,20 +36,16 @@ public class LoadGameButton : MonoBehaviour
             yield return null;
         }
 
-        // Ensure the background is fully black
         blackground.color = targetColor;
 
-        // Disable particles
         particle1.gameObject.SetActive(false);
         particle2.gameObject.SetActive(false);
         particle3.gameObject.SetActive(false);
 
-        // Wait before transitioning to light gray
-        yield return new WaitForSeconds(2f); // Optional pause before changing to gray
+        yield return new WaitForSeconds(2f); 
 
-        // Fade the background from black to light gray
         elapsedTime = 0f;
-        targetColor = new Color(0.5f, 0.5f, 0.5f, 1); // Light gray
+        targetColor = new Color(0.5f, 0.5f, 0.5f, 1);
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -60,20 +53,17 @@ public class LoadGameButton : MonoBehaviour
             yield return null;
         }
 
-        // Ensure the background is light gray
         blackground.color = targetColor;
 
 
 
-        // Wait for the specified delay before showing the text
         yield return new WaitForSeconds(textDelay);
 
-        // Gradually fade in the text
         if (fadeText != null)
         {
             fadeText.gameObject.SetActive(true);
             Color textColor = fadeText.color;
-            textColor.a = 0; // Start text as fully transparent
+            textColor.a = 0; 
             fadeText.color = textColor;
 
             elapsedTime = 0f;
@@ -85,17 +75,14 @@ public class LoadGameButton : MonoBehaviour
                 yield return null;
             }
 
-            // Ensure the text is fully visible
             textColor.a = 1;
             fadeText.color = textColor;
         }
 
         skipbutton.gameObject.SetActive(true);
 
-        // Optional: Add a delay before loading the new scene
         yield return new WaitForSeconds(30f);
 
-        // Load the new scene
         SceneManager.LoadScene(sceneName);
     }
 }

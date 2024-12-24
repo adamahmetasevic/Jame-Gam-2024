@@ -19,37 +19,36 @@ public class GameManager : MonoBehaviour
 
     public GameTimer gameTimer;
 
-    public static GameManager Instance { get; private set; } // Singleton instance
+    public static GameManager Instance { get; private set; } 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Makes the GameManager persist across scenes
+            DontDestroyOnLoad(gameObject); 
         }
         else
         {
-            Destroy(gameObject); // Prevents duplicate GameManagers
+            Destroy(gameObject); 
         }
     }
     private void Start()
     {
         playerXP = 0;
         currentLevel = 1;
-        Time.timeScale = 1f; // Ensure game starts unpaused
-        ResetUpgrades(); // Reset all upgrades when the MainScene is loaded
+        Time.timeScale = 1f; 
+        ResetUpgrades(); 
         // NAMU TIMER ADDITION
         if (gameTimer != null)
         {
-            gameTimer.ResetTimer(); // Reset the timer
-            gameTimer.StartTimer(); // Start the timer
+            gameTimer.ResetTimer();
+            gameTimer.StartTimer();
         }
         else
         {
             Debug.LogError("GameTimer reference is missing!");
         }
 
-        // Subscribe to the sceneLoaded event to handle XP reset when loading the MainScene
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -57,7 +56,6 @@ public class GameManager : MonoBehaviour
     {
         playerXP += xpAmount;
 
-        // Check for level up
         if (playerXP >= xpToNextLevel)
         {
             LevelUp();
@@ -78,14 +76,12 @@ public class GameManager : MonoBehaviour
 
     private void ShowUpgradeOptions()
 {
-    // Pick 2 or 3 random upgrades from all available upgrades
     List<UpgradeData> upgradesToShow = new List<UpgradeData>();
     
     while (upgradesToShow.Count < 3 && upgradesToShow.Count < allUpgrades.Count)
     {
         UpgradeData randomUpgrade = allUpgrades[Random.Range(0, allUpgrades.Count)];
 
-        // Check if the upgrade has already reached its limit before adding it
         if (!HasReachedUpgradeLimit(randomUpgrade))
         {
             if (!upgradesToShow.Contains(randomUpgrade))
@@ -95,16 +91,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Show upgrade panel with the choices
     upgradePanelController.ShowUpgrades(upgradesToShow, OnUpgradeSelected);
 }
 
 public bool HasReachedUpgradeLimit(UpgradeData upgrade)
 {
-    // Check the maximum applications of the upgrade
     if (upgrade.currentApplications >= upgrade.maxApplications)
     {
-        return true; // Limit reached
+        return true;
     }
     return false;
 }
@@ -115,7 +109,7 @@ private void ResetUpgrades()
     foreach (UpgradeData upgrade in allUpgrades)
     {
  
-            upgrade.currentApplications = 0; // Reset currentApplications to 0
+            upgrade.currentApplications = 0; 
         
     }
     Debug.Log("All upgrades have been reset.");
@@ -134,7 +128,6 @@ private void ResetUpgrades()
 
     private void ApplyUpgradeEffect(UpgradeData upgrade)
 {
-    // Increment the application count
     upgrade.currentApplications++;
 
     switch (upgrade.upgradeType)
@@ -204,11 +197,10 @@ private void ResetUpgrades()
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 {
-    // Reset XP and level progression if MainScene is loaded
     if (scene.name == "MainScene")
     {
         Debug.Log("MainScene loaded: Resetting XP and level progression.");
-        ResetGameState(); // Added method to handle the reset
+        ResetGameState(); 
     }
 }
 
@@ -216,8 +208,8 @@ private void ResetGameState()
 {
     playerXP = 0;
     currentLevel = 1;
-    xpToNextLevel = 100; // Reset to initial value
-    ResetUpgrades(); // Reset all upgrades when the MainScene is loaded
+    xpToNextLevel = 100;
+    ResetUpgrades(); 
 }
 
 private void OnDestroy()

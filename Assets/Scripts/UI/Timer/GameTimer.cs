@@ -1,31 +1,60 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class GameTimer : MonoBehaviour
 {
-    public static GameTimer Instance { get; private set; } // Singleton instance
+    public static GameTimer Instance { get; private set; } 
 
     public GameObject player;
 
-    private float totalTime = 0f;  // Tracks total elapsed time
+    private float totalTime = 0f; 
     private bool isTimerRunning = false;
 
     [Header("UI Components")]
-    public TextMeshProUGUI timerText; // Reference to TextMeshPro UI element
+    public TextMeshProUGUI timerText; 
 
-    public float TotalTime => totalTime; // Public property to get total time
+    public float TotalTime => totalTime; 
 
     void Awake()
     {
-        // Singleton pattern to ensure only one GameTimer exists
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Keeps timer persistent (optional)
+            DontDestroyOnLoad(gameObject); 
         }
         else
         {
             Destroy(gameObject);
+            return;
+        }
+
+        Scene currentScene = SceneManager.GetActiveScene();
+        if (currentScene.name == "MainScene")
+        {
+            ResetTimer();
+        }
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+{
+    if (scene.name == "MainScene")
+    {
+        player = GameObject.FindWithTag("Player"); 
+
+        ResetTimer(); 
+        StartTimer();
+    }
+}
+
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
         }
     }
 
@@ -37,31 +66,27 @@ public class GameTimer : MonoBehaviour
             {
                 StopTimer();
             }
-            totalTime += Time.deltaTime; // Increment total time
-            UpdateTimerUI(); // Update the timer text on screen
+            totalTime += Time.deltaTime;
+            UpdateTimerUI(); 
         }
     }
 
-    // Start the timer
     public void StartTimer()
     {
         isTimerRunning = true;
     }
 
-    // Stop the timer
     public void StopTimer()
     {
         isTimerRunning = false;
     }
 
-    // Reset the timer (optional)
     public void ResetTimer()
     {
         totalTime = 0f;
-        UpdateTimerUI(); // Reset the UI display
+        UpdateTimerUI(); 
     }
 
-    // Update the TextMeshPro UI with the formatted time
     private void UpdateTimerUI()
     {
         if (timerText != null)
