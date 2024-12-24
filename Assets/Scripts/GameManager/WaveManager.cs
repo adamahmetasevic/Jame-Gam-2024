@@ -44,13 +44,6 @@ public class WaveManager : MonoBehaviour
             // Wait for the next wave
             yield return new WaitForSeconds(waveInterval);
 
-            // Increase spawn rate for waves 7-14
-            if (currentWave >= 7 && currentWave <= 14)
-            {
-                currentSpawnRate = Mathf.Max(0.5f, currentSpawnRate * 1.5f); // Slightly increase spawn rate for waves 7-14
-                Debug.Log($"Spawn rate increased to: {currentSpawnRate}");
-            }
-
             currentWave++;
         }
     }

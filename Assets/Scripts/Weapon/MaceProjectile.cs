@@ -2,37 +2,40 @@ using UnityEngine;
 
 public class MaceProjectile : MonoBehaviour
 {
-    [SerializeField] private float lifetime = 5f; // How long the projectile will exist before being destroyed
-    [SerializeField] private float damage = 20f; // Damage dealt by the projectile
-    
+    [SerializeField] private float lifetime = 5f;
+    private float damage; // Remove baseDamage and currentDamage, just use a single damage value
+
     private void Start()
     {
-        // Destroy the projectile after a set lifetime
         Destroy(gameObject, lifetime);
-
-        // Make sure the projectile is on the "Projectile" layer
         gameObject.layer = LayerMask.NameToLayer("Playerbullet");
-
-        // Ignore collisions between the projectile and the enemy layer
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Playerbullet"), LayerMask.NameToLayer("Mace"));
+    }
+
+    // Method to set the damage when the projectile is spawned
+    public void SetDamage(float damageValue)
+    {
+        damage = damageValue;
+    }
+
+    // Method to get current damage (if needed)
+    public float GetDamage()
+    {
+        return damage;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            // Get the Enemy component and 
             Enemy enemy = collision.gameObject.GetComponent<Enemy>();
             if (enemy != null)
             {
-                enemy.TakeDamage(damage); // Deal damage to the enemy
+                enemy.TakeDamage(damage);
             }
-
-            // Destroy the projectile after hitting the enemy
             Destroy(gameObject);
         }
 
-        // Destroy projectile if it hits something else (optional, but keeps consistency)
         if (collision.gameObject.CompareTag("Obstacle"))
         {
             Destroy(gameObject);

@@ -17,6 +17,10 @@ public class CandyCaneMace : MonoBehaviour
     private int projectileCount = 1; // Number of projectiles to shoot
     private float projectileSpeed = 10f; // Speed of the projectiles
     private float projectileSize = 2f; // Size multiplier for the projectiles
+    private float maceSize = 5f; // Mace size multiplier (visual size)
+    private float maceDamageMultiplier = 1f; // Mace damage multiplier
+    private float projectileDamage = 10f; // or whatever base value
+
 
     void Start()
     {
@@ -59,9 +63,14 @@ public class CandyCaneMace : MonoBehaviour
         float velocity = (rb.position - previousPosition).magnitude / Time.fixedDeltaTime;
         previousPosition = rb.position;
 
-        return Mathf.Clamp(velocity * 5f, 0f, 100f);
+        return Mathf.Clamp(velocity * 5f * maceDamageMultiplier, 0f, 100f); // Adjust damage with the multiplier
     }
 
+
+public void UpgradeProjectileDamage(float amount) 
+{ 
+    projectileDamage += amount;
+}
     public void IncreaseMaceSpeed(float amount)
     {
         followSpeed += amount;
@@ -82,8 +91,24 @@ public class CandyCaneMace : MonoBehaviour
 
     public void UpgradeProjectileSize(float multiplier)
     {
-        projectileSize *= multiplier;
+        projectileSize += multiplier;
         Debug.Log($"Projectile size increased to {projectileSize}x!");
+    }
+
+ public void UpgradeMaceSize(float multiplier)
+{
+    maceSize += multiplier; // Increase the size of the mace
+    transform.localScale = new Vector3(maceSize, maceSize, maceSize); // Apply size change
+
+    maxDistance *= (1 + multiplier);  // Increase the max distance proportionally to the mace size
+
+    Debug.Log($"Mace size increased to {maceSize}x, max distance adjusted to {maxDistance}!");
+}
+
+    public void UpgradeMaceDamageMultiplier(float multiplier)
+    {
+        maceDamageMultiplier *= multiplier; // Increase damage multiplier
+        Debug.Log($"Mace damage multiplier increased to {maceDamageMultiplier}x!");
     }
 
     void Update()
@@ -94,7 +119,7 @@ public class CandyCaneMace : MonoBehaviour
         }
     }
 
-   void ShootProjectiles()
+    void ShootProjectiles()
 {
     if (projectileCount <= 0 || player == null) return;
 
@@ -135,15 +160,23 @@ public class CandyCaneMace : MonoBehaviour
         Vector2 direction = Quaternion.Euler(0, 0, angle) * baseDirection;
 
         // Instantiate the projectile
-        GameObject projectile = Instantiate(projectilePrefab, rb.position, Quaternion.identity);
-        Rigidbody2D rbProjectile = projectile.GetComponent<Rigidbody2D>();
+        GameObject projectileObj = Instantiate(projectilePrefab, rb.position, Quaternion.identity);
+        
+        // Get the MaceProjectile component and set its damage
+        MaceProjectile maceProjectile = projectileObj.GetComponent<MaceProjectile>();
+        if (maceProjectile != null)
+        {
+            maceProjectile.SetDamage(projectileDamage);
+        }
+
+        Rigidbody2D rbProjectile = projectileObj.GetComponent<Rigidbody2D>();
 
         if (rbProjectile != null)
         {
             rbProjectile.velocity = direction * projectileSpeed;
 
             // Adjust size of projectile
-            projectile.transform.localScale *= projectileSize;
+            projectileObj.transform.localScale *= projectileSize;
         }
 
         // Instantiate the particle effect
@@ -161,5 +194,44 @@ public class CandyCaneMace : MonoBehaviour
         }
     }
 }
+
+
+
+
+
+
+    //getters
+
+        public float GetMaceSpeed()
+{
+    return followSpeed; 
+}
+public float GetProjectileDamage() { return projectileDamage; }
+
+public float GetMaceSize()
+{
+    Vector3 currentScale = transform.localScale;
+    Debug.Log($"Current Mace Scale: {currentScale}");
+    return currentScale.x; // Assuming uniform scaling
+}
+public int GetProjectileCount()
+{
+    return projectileCount; 
+}
+
+public float GetProjectileSpeed()
+{
+    return projectileSpeed; 
+}
+
+public float GetMaceDamageMultiplier()
+{
+    return maceDamageMultiplier; 
+}
+public float GetProjectileSize()
+{
+    return projectileSize; 
+}
+
 
 }

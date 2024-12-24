@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60385429a14d67f40a22173a02274f0b, type: 3}
   m_Name: ProjectileSize
   m_EditorClassIdentifier: 
-  upgradeName: BIGGER CANES
-  description: BIGGER CANES TO SHOOT
-  icon: {fileID: 0}
+  upgradeName: BIGGER MINTS
+  description: BIGGER PEPPERMINTS TO SHOOT
+  icon: {fileID: 21300000, guid: ea7fbe83ae6ee9c40b762e1a791733f2, type: 3}
   upgradeType: 3
   value: 1
+  maxValue: 5

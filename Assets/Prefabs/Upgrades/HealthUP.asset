@@ -15,5 +15,6 @@ MonoBehaviour:
   upgradeName: MAX HEALTH UP
   description: Increases Max Health
   icon: {fileID: 0}
-  upgradeType: 4
+  upgradeType: 5
   value: 50
+  maxValue: 1e+12

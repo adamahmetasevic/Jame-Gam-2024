@@ -119,7 +119,7 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        Debug.Log($"Enemy took {damage} damage! Current health: {currentHealth}");
+        //Debug.Log($"Enemy took {damage} damage! Current health: {currentHealth}");
 
         StartCoroutine(DamageFlash());
 

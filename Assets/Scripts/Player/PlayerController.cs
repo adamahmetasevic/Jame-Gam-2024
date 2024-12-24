@@ -86,6 +86,11 @@ public class PlayerController : MonoBehaviour
    public void IncreaseSpeed(int amount){
     moveSpeed+=amount;
    }
+
+   public float GetMovementSpeed()
+   {
+    return moveSpeed;
+   }
    /*
     public void IncreaseMaceDamage(float multiplier)
     {
