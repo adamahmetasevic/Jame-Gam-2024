@@ -26,6 +26,7 @@ public class CandyCaneMace : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         previousPosition = rb.position;
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Projectile"), LayerMask.NameToLayer("Mace"));
     }
 
     void FixedUpdate()
