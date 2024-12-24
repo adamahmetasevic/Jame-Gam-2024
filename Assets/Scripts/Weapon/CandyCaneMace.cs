@@ -17,7 +17,7 @@ public class CandyCaneMace : MonoBehaviour
     private int projectileCount = 1; // Number of projectiles to shoot
     private float projectileSpeed = 10f; // Speed of the projectiles
     private float projectileSize = 2f; // Size multiplier for the projectiles
-    private float maceSize = 5f; // Mace size multiplier (visual size)
+    private float maceSize = 1f; // Mace size multiplier (visual size)
     private float maceDamageMultiplier = 1f; // Mace damage multiplier
     private float projectileDamage = 10f; // or whatever base value
 
