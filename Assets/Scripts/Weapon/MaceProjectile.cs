@@ -10,6 +10,8 @@ public class MaceProjectile : MonoBehaviour
         Destroy(gameObject, lifetime);
         gameObject.layer = LayerMask.NameToLayer("Playerbullet");
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Playerbullet"), LayerMask.NameToLayer("Mace"));
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Projectile"), LayerMask.NameToLayer("Mace"));
+
     }
 
     // Method to set the damage when the projectile is spawned

@@ -52,11 +52,7 @@ public class WaveManager : MonoBehaviour
     {
         float spawnRate = currentSpawnRate;
 
-        // Adjust spawn rate for waves 7-14
-        if (waveNumber >= 7 && waveNumber <= 14)
-        {
-            spawnRate *= 1.5f;
-        }
+ 
 
         // Spawn enemies based on the wave number
         switch (waveNumber)
@@ -83,13 +79,7 @@ public class WaveManager : MonoBehaviour
             case 8:
             case 9:
             case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
                 yield return StartCoroutine(SpawnEnemies(elvesPrefab, snowmenPrefab, reindeerPrefab, spawnRate));
-                break;
-            case 15:
                 SpawnSantaBoss(); // Special case for the Santa Boss
                 break;
             default:

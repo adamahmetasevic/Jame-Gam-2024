@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
         playerXP = 0;
         currentLevel = 1;
         Time.timeScale = 1f; // Ensure game starts unpaused
-
+        ResetUpgrades(); // Reset all upgrades when the MainScene is loaded
         // NAMU TIMER ADDITION
         if (gameTimer != null)
         {
@@ -88,53 +88,26 @@ public class GameManager : MonoBehaviour
 
 public bool HasReachedUpgradeLimit(UpgradeData upgrade)
 {
-    try
+    // Check the maximum applications of the upgrade
+    if (upgrade.currentApplications >= upgrade.maxApplications)
     {
-        CandyCaneMace candyCaneMace = FindObjectOfType<CandyCaneMace>();
-        PlayerController playerController = FindObjectOfType<PlayerController>();
-        MaceProjectile maceProjectile = FindObjectOfType<MaceProjectile>();
-
-        // Check if required components exist before checking limits
-        if (candyCaneMace == null || playerController == null || maceProjectile == null)
-        {
-            Debug.LogWarning("One or more required components not found: " +
-                           $"CandyCaneMace: {candyCaneMace != null}, " +
-                           $"PlayerController: {playerController != null}, " +
-                           $"MaceProjectile: {maceProjectile != null}");
-            return false; // Return false to allow upgrade if components are missing
-        }
-
-        switch (upgrade.upgradeType)
-        {
-            case UpgradeData.UpgradeType.MaceSpeedIncrease:
-                return candyCaneMace.GetMaceSpeed() >= upgrade.maxValue;
-            case UpgradeData.UpgradeType.MovementSpeedBoost:
-                return playerController.GetMovementSpeed() >= upgrade.maxValue;
-            case UpgradeData.UpgradeType.MaceSizeIncrease:
-                return candyCaneMace.GetMaceSize() >= upgrade.maxValue;
-            case UpgradeData.UpgradeType.ProjectileCountIncrease:
-                return candyCaneMace.GetProjectileCount() >= upgrade.maxValue;
-            case UpgradeData.UpgradeType.ProjectileSpeedIncrease:
-                return candyCaneMace.GetProjectileSpeed() >= upgrade.maxValue;
-            case UpgradeData.UpgradeType.ProjectileSizeIncrease:
-                return candyCaneMace.GetProjectileSize() >= upgrade.maxValue;
-            case UpgradeData.UpgradeType.ProjectileDamageIncrease:
-                return candyCaneMace.GetProjectileDamage() >= upgrade.maxValue;
-            case UpgradeData.UpgradeType.MaceDamageMultiplierIncrease:
-                return candyCaneMace.GetMaceDamageMultiplier() >= upgrade.maxValue;
-            default:
-                Debug.LogWarning($"Unknown upgrade type: {upgrade.upgradeType}");
-                return false;
-        }
+        return true; // Limit reached
     }
-    catch (System.Exception e)
-    {
-        Debug.LogError($"Error in HasReachedUpgradeLimit: {e.Message}");
-        return false; // Return false to allow upgrade if there's an error
-    }
+    return false;
 }
 
 
+private void ResetUpgrades()
+{
+    foreach (UpgradeData upgrade in allUpgrades)
+    {
+        if (upgrade != null)
+        {
+            upgrade.currentApplications = 0; // Reset currentApplications to 0
+        }
+    }
+    Debug.Log("All upgrades have been reset.");
+}
 
 
 
@@ -149,6 +122,9 @@ public bool HasReachedUpgradeLimit(UpgradeData upgrade)
 
     private void ApplyUpgradeEffect(UpgradeData upgrade)
 {
+    // Increment the application count
+    upgrade.currentApplications++;
+
     switch (upgrade.upgradeType)
     {
         case UpgradeData.UpgradeType.MaceSpeedIncrease:
@@ -170,15 +146,14 @@ public bool HasReachedUpgradeLimit(UpgradeData upgrade)
             FindObjectOfType<CandyCaneMace>().UpgradeProjectileSize(upgrade.value);
             break;
         case UpgradeData.UpgradeType.MaceSizeIncrease:
-            FindObjectOfType<CandyCaneMace>().UpgradeMaceSize(upgrade.value); 
+            FindObjectOfType<CandyCaneMace>().UpgradeMaceSize(upgrade.value);
             break;
         case UpgradeData.UpgradeType.ProjectileDamageIncrease:
             FindObjectOfType<CandyCaneMace>().UpgradeProjectileDamage(upgrade.value);
             break;
         case UpgradeData.UpgradeType.MaceDamageMultiplierIncrease:
-            FindObjectOfType<CandyCaneMace>().UpgradeMaceDamageMultiplier(upgrade.value); 
+            FindObjectOfType<CandyCaneMace>().UpgradeMaceDamageMultiplier(upgrade.value);
             break;
-
     }
 }
 
@@ -224,6 +199,8 @@ public bool HasReachedUpgradeLimit(UpgradeData upgrade)
             playerXP = 0;
             currentLevel = 1;
             xpToNextLevel = 100; // Reset to initial value
+            ResetUpgrades(); // Reset all upgrades when the MainScene is loaded
+
         }
     }
 

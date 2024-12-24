@@ -26,7 +26,7 @@ public class UpgradePanelController : MonoBehaviour
     availableUpgrades = upgrades;
     onUpgradeSelected = callback;
 
-    // Filter upgrades to remove those that have reached their max value
+    // Filter upgrades to show only those that haven’t reached their maxApplications
     List<UpgradeData> availableUpgradesToShow = new List<UpgradeData>();
 
     foreach (var upgrade in upgrades)
@@ -37,31 +37,25 @@ public class UpgradePanelController : MonoBehaviour
         }
     }
 
-    // If no upgrades are available (all are maxed out), you can show a fallback message or hide the panel
+    // If no upgrades are available (all are maxed out)
     if (availableUpgradesToShow.Count == 0)
     {
         Debug.Log("All upgrades are maxed out!");
-        // Optionally, display a message to the player or just hide the upgrade panel
-        // e.g., Show a message like "No more upgrades available"
+        upgradePanel.SetActive(false);
         return;
     }
 
-    // If there are available upgrades, show them
-    int buttonCount = availableUpgradesToShow.Count;
-    
-    for (int i = 0; i < buttonCount; i++)
+    // Display upgrades as before
+    for (int i = 0; i < availableUpgradesToShow.Count; i++)
     {
-        // Instantiate the button at the correct position from the buttonPositions list
         if (i < buttonPositions.Length)
         {
-            // Instantiate the button prefab
             GameObject buttonObj = Instantiate(upgradeButtonPrefab, buttonPositions[i].position, Quaternion.identity, buttonPositions[i]);
             Button button = buttonObj.GetComponent<Button>();
 
             TextMeshProUGUI buttonText = buttonObj.GetComponentInChildren<TextMeshProUGUI>();
             buttonText.text = $"{availableUpgradesToShow[i].upgradeName}\n{availableUpgradesToShow[i].description}";
 
-            // Capture the current upgrade instance to prevent closure issue in the lambda
             UpgradeData capturedUpgrade = availableUpgradesToShow[i];
             button.onClick.AddListener(() => OnUpgradeSelected(capturedUpgrade));
 
@@ -69,6 +63,7 @@ public class UpgradePanelController : MonoBehaviour
         }
     }
 }
+
 
 
 

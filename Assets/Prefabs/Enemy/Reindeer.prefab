@@ -99,14 +99,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61ef2c38fccffe54ebcbd2e3ac49c9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 200
-  moveSpeed: 5
+  maxHealth: 512
+  moveSpeed: 7
   minDistanceToPlayer: 3
   knockbackForce: 1
   projectilePrefab: {fileID: 7955273834683194061, guid: d90779450e8a0964aaa92503b63c4db0, type: 3}
   shootPoint: {fileID: 7565128640590171612}
-  fireRate: 3
-  projectileSpeed: 10.41
+  fireRate: 2
+  projectileSpeed: 16.42
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
   isSantaBoss: 0
 --- !u!50 &2206372555501135696

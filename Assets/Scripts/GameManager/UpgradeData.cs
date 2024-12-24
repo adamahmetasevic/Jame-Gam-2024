@@ -8,20 +8,22 @@ public class UpgradeData : ScriptableObject
     public Sprite icon;                 // Optional: Icon for the UI
 
     public UpgradeType upgradeType;     // Enum to classify upgrades
-    public float value;                 // Current value (e.g., damage boost, size increase, etc.)
-    public float maxValue;              // Maximum value for this upgrade
+    public float value;                 // Effect of the upgrade
+
+    public int currentApplications = 0; // Track how many times this upgrade was applied
+    public int maxApplications = 1;     // Maximum number of times this upgrade can be applied
 
     public enum UpgradeType
     {
-        MaceSpeedIncrease,         // Increases the mace speed
-        ProjectileCountIncrease,   // Increases number of projectiles
-        ProjectileSpeedIncrease,   // Increases projectile speed
-        ProjectileSizeIncrease,    // Increases projectile size
+        MaceSpeedIncrease,
+        ProjectileCountIncrease,
+        ProjectileSpeedIncrease,
+        ProjectileSizeIncrease,
         ProjectileDamageIncrease,
-        HealthIncrease,            // Increases player's health
-        MovementSpeedBoost,        // Increases player movement speed
-        MaceSizeIncrease,          // Increases mace size
-        MaceDamageMultiplierIncrease // Increases mace damage multiplier
+        HealthIncrease,
+        MovementSpeedBoost,
+        MaceSizeIncrease,
+        MaceDamageMultiplierIncrease
     }
 }
 
