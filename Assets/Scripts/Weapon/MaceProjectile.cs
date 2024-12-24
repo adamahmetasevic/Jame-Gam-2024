@@ -10,7 +10,6 @@ public class MaceProjectile : MonoBehaviour
         Destroy(gameObject, lifetime);
         gameObject.layer = LayerMask.NameToLayer("Playerbullet");
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Playerbullet"), LayerMask.NameToLayer("Mace"));
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Projectile"), LayerMask.NameToLayer("Mace"));
 
     }
 
@@ -26,21 +25,22 @@ public class MaceProjectile : MonoBehaviour
         return damage;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+private void OnCollisionEnter2D(Collision2D collision)
+{
+    if (collision.gameObject.CompareTag("Enemy"))
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+        if (enemy != null)
         {
-            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage(damage);
-            }
-            Destroy(gameObject);
+            enemy.TakeDamage(damage);
         }
-
-        if (collision.gameObject.CompareTag("Obstacle"))
-        {
-            Destroy(gameObject);
-        }
+        if (this != null) Destroy(gameObject); // Ensure the projectile still exists
     }
+
+    if (collision.gameObject.CompareTag("Obstacle"))
+    {
+        if (this != null) Destroy(gameObject);
+    }
+}
+
 }

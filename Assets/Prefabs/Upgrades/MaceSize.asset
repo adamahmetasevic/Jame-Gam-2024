@@ -17,4 +17,5 @@ MonoBehaviour:
   icon: {fileID: 0}
   upgradeType: 7
   value: 5
-  maxValue: 20
+  currentApplications: 0
+  maxApplications: 3

@@ -19,6 +19,19 @@ public class GameManager : MonoBehaviour
 
     public GameTimer gameTimer;
 
+    public static GameManager Instance { get; private set; } // Singleton instance
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Makes the GameManager persist across scenes
+        }
+        else
+        {
+            Destroy(gameObject); // Prevents duplicate GameManagers
+        }
+    }
     private void Start()
     {
         playerXP = 0;
@@ -101,10 +114,9 @@ private void ResetUpgrades()
 {
     foreach (UpgradeData upgrade in allUpgrades)
     {
-        if (upgrade != null)
-        {
+ 
             upgrade.currentApplications = 0; // Reset currentApplications to 0
-        }
+        
     }
     Debug.Log("All upgrades have been reset.");
 }
@@ -191,22 +203,26 @@ private void ResetUpgrades()
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+{
+    // Reset XP and level progression if MainScene is loaded
+    if (scene.name == "MainScene")
     {
-        // Reset XP and level progression if MainScene is loaded
-        if (scene.name == "MainScene")
-        {
-            Debug.Log("MainScene loaded: Resetting XP and level progression.");
-            playerXP = 0;
-            currentLevel = 1;
-            xpToNextLevel = 100; // Reset to initial value
-            ResetUpgrades(); // Reset all upgrades when the MainScene is loaded
-
-        }
+        Debug.Log("MainScene loaded: Resetting XP and level progression.");
+        ResetGameState(); // Added method to handle the reset
     }
+}
 
-    private void OnDestroy()
-    {
-        // Unsubscribe from the sceneLoaded event to prevent memory leaks
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
+private void ResetGameState()
+{
+    playerXP = 0;
+    currentLevel = 1;
+    xpToNextLevel = 100; // Reset to initial value
+    ResetUpgrades(); // Reset all upgrades when the MainScene is loaded
+}
+
+private void OnDestroy()
+{
+    SceneManager.sceneLoaded -= OnSceneLoaded;
+
+}
 }

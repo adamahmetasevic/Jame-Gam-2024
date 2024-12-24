@@ -17,4 +17,5 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: ea7fbe83ae6ee9c40b762e1a791733f2, type: 3}
   upgradeType: 3
   value: 1
-  maxValue: 5
+  currentApplications: 0
+  maxApplications: 4

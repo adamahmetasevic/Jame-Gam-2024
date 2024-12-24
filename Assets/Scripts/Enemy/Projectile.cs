@@ -14,6 +14,8 @@ public class Projectile : MonoBehaviour
         
         // Ignore collisions between projectile layer and enemy layer specifically
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Projectile"), LayerMask.NameToLayer("Enemy"));
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Projectile"), LayerMask.NameToLayer("Projectile"));
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Projectile"), LayerMask.NameToLayer("Playerbullet"));
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
